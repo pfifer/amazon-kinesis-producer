@@ -87,8 +87,9 @@ set(TESTS_SOURCE
     aws/kinesis/core/test/user_record_test.cc
     aws/metrics/test/accumulator_test.cc
     aws/metrics/test/metric_test.cc
-    aws/metrics/test/metrics_manager_test.cc
-    )
+    aws/metrics/test/metrics_manager_test.cc)
+
+
 
 
 set(THIRD_PARTY_LIBS third_party/lib)
@@ -232,3 +233,7 @@ target_link_libraries(test_driver ${CMAKE_THREAD_LIBS_INIT} LibProto LibAwsCore 
 add_executable(tests ${SOURCE_FILES} ${TESTS_SOURCE} ${LOGGING_TRIGGERS} aws/kinesis/test/test.cc)
 target_include_directories(tests SYSTEM PUBLIC ${THIRD_PARTY_INCLUDE})
 target_link_libraries(tests ${CMAKE_THREAD_LIBS_INIT} LibProto LibAwsCore LibAwsKinesis LibAwsMonitoring ${LIBBACKTRACE_LIBRARIES} ${STATIC_LIBS} boost_unit_test_framework ${UUID_LIBRARIES})
+
+add_executable(stack_trace_test ${SOURCE_FILES} ${LOGGING_TRIGGERS} aws/utils/test/terminate_handler_test.cpp)
+target_include_directories(stack_trace_test SYSTEM PUBLIC ${THIRD_PARTY_INCLUDE})
+target_link_libraries(stack_trace_test ${CMAKE_THREAD_LIBS_INIT} LibProto LibAwsCore LibAwsKinesis LibAwsMonitoring ${LIBBACKTRACE_LIBRARIES} ${STATIC_LIBS} boost_unit_test_framework ${UUID_LIBRARIES})
