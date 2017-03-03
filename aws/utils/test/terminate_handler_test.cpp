@@ -20,18 +20,20 @@ struct Configuration {
   bool is_rethrown = false;
   int start_level = 2;
   bool threaded = false;
+  bool enable_stack = true;
 };
 
 struct option options[] = {
-        {"how",         required_argument, nullptr, 'o'},
-        {"in-catch",    no_argument,       nullptr, 'c'},
-        {"rethrow",     no_argument,       nullptr, 'r'},
-        {"start-level", required_argument, nullptr, 's'},
-        {"threaded",    no_argument,       nullptr, 't'},
-        {nullptr, 0,                       nullptr, 0}
+        {"how",           required_argument, nullptr, 'o'},
+        {"in-catch",      no_argument,       nullptr, 'c'},
+        {"rethrow",       no_argument,       nullptr, 'r'},
+        {"start-level",   required_argument, nullptr, 's'},
+        {"threaded",      no_argument,       nullptr, 't'},
+        {"disable-stack", no_argument,       nullptr, 'd'},
+        {nullptr, 0,                         nullptr, 0}
 };
 
-void run_test(const Configuration& config) {
+void run_test(const Configuration &config) {
   aws::utils::terminate_level_1 test;
   switch (config.start_level) {
     case 0:
@@ -52,12 +54,11 @@ void run_test(const Configuration& config) {
 
 
 int main(int argc, char **argv) {
-  std::set_terminate(&verify_terminate_handler);
-  aws::utils::setup_stack_trace(argv[0]);
+
 
   Configuration config;
   int ch;
-  while ((ch = getopt_long(argc, argv, "o:s:crt", options, nullptr)) != -1) {
+  while ((ch = getopt_long(argc, argv, "o:s:crtd", options, nullptr)) != -1) {
     switch (ch) {
       case 'o':
         config.how = std::atoi(optarg);
@@ -74,6 +75,9 @@ int main(int argc, char **argv) {
       case 't':
         config.threaded = true;
         break;
+      case 'd':
+        config.enable_stack = false;
+        break;
       default:
         std::cerr << "Unknown option '" << ch << "'" << std::endl;
         exit(1);
@@ -82,18 +86,22 @@ int main(int argc, char **argv) {
   argc -= optind;
   argv += optind;
 
+  if (config.enable_stack) {
+    std::set_terminate(&verify_terminate_handler);
+    aws::utils::setup_stack_trace(argv[0]);
+  }
+
   if (config.threaded) {
     std::thread thread(run_test, config);
     thread.join();
   } else {
     try {
       run_test(config);
-    } catch (std::runtime_error& err) {
+    } catch (std::runtime_error &err) {
       std::cerr << "Caught runtime error: " << err.what() << std::endl << std::flush;
       throw err;
     }
   }
-
 
 
 }
