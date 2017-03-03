@@ -234,6 +234,6 @@ add_executable(tests ${SOURCE_FILES} ${TESTS_SOURCE} ${LOGGING_TRIGGERS} aws/kin
 target_include_directories(tests SYSTEM PUBLIC ${THIRD_PARTY_INCLUDE})
 target_link_libraries(tests ${CMAKE_THREAD_LIBS_INIT} LibProto LibAwsCore LibAwsKinesis LibAwsMonitoring ${LIBBACKTRACE_LIBRARIES} ${STATIC_LIBS} boost_unit_test_framework ${UUID_LIBRARIES})
 
-add_executable(stack_trace_test ${SOURCE_FILES} ${LOGGING_TRIGGERS} aws/utils/test/terminate_handler_test.cpp)
+add_executable(stack_trace_test ${SOURCE_FILES} ${LOGGING_TRIGGERS} aws/utils/test/terminate_handler_test.cpp aws/utils/test/levels/terminate_level_1.cc aws/utils/test/levels/terminate_level_1.h aws/utils/test/levels/terminate_level.h aws/utils/test/levels/terminate_level_2.cc aws/utils/test/levels/terminate_level_2.h aws/utils/test/levels/terminate_level_3.cc aws/utils/test/levels/terminate_level_3.h)
 target_include_directories(stack_trace_test SYSTEM PUBLIC ${THIRD_PARTY_INCLUDE})
 target_link_libraries(stack_trace_test ${CMAKE_THREAD_LIBS_INIT} LibProto LibAwsCore LibAwsKinesis LibAwsMonitoring ${LIBBACKTRACE_LIBRARIES} ${STATIC_LIBS} boost_unit_test_framework ${UUID_LIBRARIES})
