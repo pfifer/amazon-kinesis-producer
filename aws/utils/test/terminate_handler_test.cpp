@@ -8,6 +8,7 @@
 #include <exception>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 void verify_terminate_handler() {
   std::cout << "Chained termination handler was called as expected" << std::endl << std::flush;
@@ -15,7 +16,7 @@ void verify_terminate_handler() {
 
 class Test3 {
 public:
-  void level_3(int how) {
+  void test(int how) {
     if (how > 100) {
       throw 10;
     }
@@ -38,13 +39,17 @@ public:
   Test3 test3;
   void level_2(int how) {
     try {
-      test3.level_3(how);
+      test3.test(how);
     } catch (int code) {
       std::cout << "Caught code: " << code << std::endl << std::flush;
       std::stringstream message;
       message << "Caught code: " << code;
       throw std::runtime_error(message.str());
     }
+  }
+
+  void test_no(int how) {
+    test3.test(how);
   }
 };
 
@@ -58,21 +63,35 @@ public:
       std::cout << "Caught runtime_error: " << err.what() << std::endl << std::flush;
     }
   }
+
+  void test_no(int how) {
+    test2.test_no(how);
+  }
 };
 
 
 
 int main(int argc, char** argv) {
+  if (argc != 3) {
+    std::cerr << "Need the mode, and the value for how. argc: " << argc << std::endl;
+    exit(1);
+  }
   std::set_terminate(&verify_terminate_handler);
   aws::utils::setup_stack_trace(argv[0]);
+  std::string mode(argv[1]);
+  int how = std::atoi(argv[2]);
   Test1 test;
 
-  test.level_1(10);
-  test.level_1(101);
-  test.level_1(1001);
-  std::cout << "Now ready to cause unhandled exception" << std::endl << std::flush;
-  test.level_1(9001);
-
-  throw std::system_error(std::make_error_code(std::errc::invalid_argument));
+  if (mode == "handled") {
+    test.level_1(10);
+    test.level_1(101);
+    test.level_1(1001);
+    std::cout << "Now ready to cause unhandled exception" << std::endl << std::flush;
+    test.level_1(9001);
+  } else if (mode == "unhandled") {
+    test.test_no(how);
+  } else {
+    std::cerr << "Unknown mode: " << mode << std::endl;
+  }
 
 }
