@@ -8,6 +8,7 @@
 #include <thread>
 #include <getopt.h>
 
+
 #include "levels/terminate_level_1.h"
 
 void verify_terminate_handler() {
@@ -33,7 +34,14 @@ struct option options[] = {
         {nullptr, 0,                         nullptr, 0}
 };
 
-void run_test(const Configuration &config) {
+#ifdef DISABLE_THREAD_EXCEPT
+#define EXCEPT_SIGNATURE noexcept
+#else
+#define EXCEPT_SIGNATURE
+#endif
+
+
+void run_test(const Configuration &config) EXCEPT_SIGNATURE {
   aws::utils::terminate_level_1 test;
   switch (config.start_level) {
     case 0:

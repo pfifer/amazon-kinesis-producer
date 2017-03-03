@@ -102,6 +102,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
+    add_definitions(-DDISABLE_THREAD_EXCEPT)
 endif()
 
 if(LINUX)
