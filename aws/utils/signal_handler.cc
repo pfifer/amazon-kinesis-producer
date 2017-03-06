@@ -150,7 +150,7 @@ static void report_terminate() {
   write_error_header();
   WRITE_MESSAGE("Terminate Called: w/o noexcept\n");
   write_stack_trace();
-  write_error_tail();
+  WRITE_MESSAGE("---END INFO---\n");
   write_report_end();
   if (existing_handler != nullptr) {
     (*existing_handler)();
@@ -222,7 +222,7 @@ namespace aws {
 
     void throw_test_exception() {
       if (throw_exception) {
-        print_stack_trace_message("Exception throw start requested: w/o noexcept");
+        print_stack_trace_message("Exception throw start requested: w/o noexcept\n");
         throw std::system_error(std::make_error_code(std::errc::already_connected));
       }
     }

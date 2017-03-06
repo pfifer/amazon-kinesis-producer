@@ -52,7 +52,7 @@ class KinesisProducer : boost::noncopyable {
     create_cw_client(ca_path);
     create_metrics_manager();
     report_outstanding();
-    message_drainer_ = aws::thread([this] { this->drain_messages(); });
+    message_drainer_ = aws::thread([this]() noexcept { this->drain_messages(); });
   }
 
   ~KinesisProducer() {

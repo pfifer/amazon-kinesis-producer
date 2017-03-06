@@ -84,8 +84,7 @@ class IoServiceExecutor : boost::noncopyable,
             *io_service_,
             Clock::now() + std::chrono::seconds(1)) {
     for (size_t i = 0; i < num_threads; i++) {
-      aws::thread t(thread_proc, this);
-      threads_.emplace_back(std::move(t));
+      threads_.emplace_back([this]() noexcept { this->io_service_->run(); });
     }
   }
 
