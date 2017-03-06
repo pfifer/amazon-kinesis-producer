@@ -11,8 +11,16 @@
 
 #include "levels/terminate_level_1.h"
 
+std::terminate_handler existing_handler = nullptr;
+
 void verify_terminate_handler() {
   std::cout << "Chained termination handler was called as expected" << std::endl << std::flush;
+
+  if (existing_handler) {
+    std::cout << "Existing handler is present, chaining to it." << std::endl << std::flush;
+    (*existing_handler)();
+    std::cout << "Existing handler has returned." << std::endl << std::flush;
+  }
 }
 
 struct Configuration {
@@ -95,6 +103,7 @@ int main(int argc, char **argv) {
   argv += optind;
 
   if (config.enable_stack) {
+    existing_handler = std::get_terminate();
     std::set_terminate(&verify_terminate_handler);
     aws::utils::setup_stack_trace(argv[0]);
   }
