@@ -20,8 +20,11 @@
 #include <cstring>
 #include <cstdlib>
 #include <exception>
+#include <system_error>
 
 static size_t signal_message_sizes[NSIG];
+
+static volatile bool throw_exception = false;
 
 void write_signal_description(int signal) {
   if (signal <= 0 || signal >= NSIG) {
@@ -100,6 +103,7 @@ static void signal_handler(int, siginfo_t *info, void *) {
       break;
     case SIGUSR1:
       WRITE_MESSAGE("SIGUSR1");
+      throw_exception = true;
       break;
     default:
       WRITE_MESSAGE("Unhandled Signal(");
@@ -203,6 +207,14 @@ namespace aws {
       // Add a termination handler to try and report stack traces
       //
       install_termination_handler();
+    }
+
+
+
+    void throw_test_exception() {
+      if (throw_exception) {
+        throw std::system_error(std::make_error_code(std::errc::already_connected));
+      }
     }
   }
 }

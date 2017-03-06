@@ -17,6 +17,7 @@
 namespace aws {
     namespace utils {
         void setup_stack_trace(const char *exe);
+      void throw_test_exception();
     }
 }
 

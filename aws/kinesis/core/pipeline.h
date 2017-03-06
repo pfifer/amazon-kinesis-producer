@@ -26,6 +26,8 @@
 #include <aws/kinesis/KinesisClient.h>
 #include <aws/metrics/metrics_manager.h>
 
+#include <aws/utils/signal_handler.h>
+
 namespace aws {
 namespace kinesis {
 namespace core {
@@ -143,6 +145,7 @@ class Pipeline : boost::noncopyable {
                auto& /*sdk_req*/,
                auto& outcome,
                auto sdk_ctx) {
+          aws::utils::throw_test_exception();
           auto ctx = std::dynamic_pointer_cast<PutRecordsContext>(
               std::const_pointer_cast<Aws::Client::AsyncCallerContext>(
                   sdk_ctx));
