@@ -139,7 +139,7 @@ static std::terminate_handler existing_handler = nullptr;
 static void report_terminate() {
   write_report_start();
   write_error_header();
-  WRITE_MESSAGE("Terminate Called\n");
+  WRITE_MESSAGE("Terminate Called: noexcept\n");
   write_stack_trace();
   write_error_tail();
   write_report_end();
