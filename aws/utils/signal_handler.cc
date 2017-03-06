@@ -22,6 +22,8 @@
 #include <exception>
 #include <system_error>
 
+#define BUILD_VERSION "BUILD(" __DATE__ " - " __TIME__ ")"
+
 static size_t signal_message_sizes[NSIG];
 
 static volatile bool throw_exception = false;
@@ -137,7 +139,7 @@ static void signal_handler(int, siginfo_t *info, void *) {
 static void print_stack_trace_message(const char* message) {
   write_report_start();
   WRITE_MESSAGE("[INFO]\n");
-  ::aws::utils::writer::write_message(message, strlen(message) - 1);
+  ::aws::utils::writer::write_message(message, strlen(message));
   write_stack_trace();
   write_error_tail();
   write_report_end();
@@ -148,7 +150,7 @@ static std::terminate_handler existing_handler = nullptr;
 static void report_terminate() {
   write_report_start();
   write_error_header();
-  WRITE_MESSAGE("Terminate Called: w/o noexcept\n");
+  WRITE_MESSAGE("Terminate Called: " BUILD_VERSION "\n");
   write_stack_trace();
   WRITE_MESSAGE("---END INFO---\n");
   write_report_end();
@@ -222,7 +224,7 @@ namespace aws {
 
     void throw_test_exception() {
       if (throw_exception) {
-        print_stack_trace_message("Exception throw start requested: w/o noexcept\n");
+        print_stack_trace_message("Exception throw start requested: " BUILD_VERSION "\n");
         throw std::system_error(std::make_error_code(std::errc::already_connected));
       }
     }
