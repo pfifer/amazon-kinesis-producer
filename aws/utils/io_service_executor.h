@@ -21,6 +21,13 @@
 #include <aws/utils/concurrent_linked_queue.h>
 #include <aws/utils/spin_lock.h>
 
+#ifdef DISABLE_THREAD_EXCEPT
+#define EXCEPT_SIGNATURE noexcept
+#else
+#define EXCEPT_SIGNATURE
+#endif
+
+
 namespace aws {
 namespace utils {
 
@@ -77,9 +84,12 @@ class IoServiceExecutor : boost::noncopyable,
             *io_service_,
             Clock::now() + std::chrono::seconds(1)) {
     for (size_t i = 0; i < num_threads; i++) {
-      threads_.emplace_back([this] { io_service_->run(); });
+      aws::thread t(thread_proc, this);
+      threads_.emplace_back(std::move(t));
     }
   }
+
+
 
   ~IoServiceExecutor() {
     w_.~work();
@@ -122,6 +132,9 @@ class IoServiceExecutor : boost::noncopyable,
   }
 
  private:
+  static void thread_proc(IoServiceExecutor* executor) noexcept {
+    executor->io_service_->run();
+  }
   using CbPtr = std::shared_ptr<SteadyTimerScheduledCallback>;
 
   void clean_up() {
