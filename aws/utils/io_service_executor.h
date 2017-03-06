@@ -132,7 +132,7 @@ class IoServiceExecutor : boost::noncopyable,
   }
 
  private:
-  static void thread_proc(IoServiceExecutor* executor) noexcept {
+  static void thread_proc(IoServiceExecutor* executor) {
     executor->io_service_->run();
   }
   using CbPtr = std::shared_ptr<SteadyTimerScheduledCallback>;
