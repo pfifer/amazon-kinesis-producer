@@ -20,13 +20,7 @@
 #include <aws/utils/executor.h>
 #include <aws/utils/concurrent_linked_queue.h>
 #include <aws/utils/spin_lock.h>
-
-#ifdef DISABLE_THREAD_EXCEPT
-#define EXCEPT_SIGNATURE noexcept
-#else
-#define EXCEPT_SIGNATURE
-#endif
-
+#include <aws/utils/reporting_thread.h>
 
 namespace aws {
 namespace utils {
@@ -73,18 +67,33 @@ class SteadyTimerScheduledCallback : boost::noncopyable,
   boost::asio::steady_timer timer_;
 };
 
-class IoServiceThread;
-
 class IoServiceExecutor : boost::noncopyable,
                           public Executor {
  public:
-  IoServiceExecutor(size_t num_threads);
+  IoServiceExecutor(size_t num_threads)
+      : io_service_(std::make_shared<boost::asio::io_service>()),
+        w_(*io_service_),
+        clean_up_cb_(
+            [this] { this->clean_up(); },
+            *io_service_,
+            Clock::now() + std::chrono::seconds(1)) {
+    for (size_t i = 0; i < num_threads; i++) {
+      threads_.emplace_back(aws::utils::make_reporting_thread([this] { io_service_->run(); }));
+    }
+  }
 
+  ~IoServiceExecutor() {
+    w_.~work();
+    io_service_->stop();
+    for (auto& t : threads_) {
+      t.join();
+    }
+    clean_up();
+  }
 
-
-  ~IoServiceExecutor();
-
-  void submit(Func f) override;
+  void submit(Func f) override {
+    io_service_->post(std::move(f));
+  };
 
   std::shared_ptr<ScheduledCallback> schedule(Func f,
                                               TimePoint at) override {
@@ -143,26 +152,12 @@ class IoServiceExecutor : boost::noncopyable,
 
   std::shared_ptr<boost::asio::io_service> io_service_;
   boost::asio::io_service::work w_;
-  std::vector<IoServiceThread> threads_;
+  std::vector<aws::thread> threads_;
   std::list<CbPtr> callbacks_;
   aws::utils::SpinLock clean_up_mutex_;
   aws::utils::ConcurrentLinkedQueue<CbPtr> callbacks_clq_;
   SteadyTimerScheduledCallback clean_up_cb_;
 };
-
-  class IoServiceThread {
-  private:
-    pthread_t thread_id;
-  public:
-    IoServiceThread(IoServiceExecutor* executor);
-
-    IoServiceThread(IoServiceThread&) = delete;
-    IoServiceThread(IoServiceThread&& other) : thread_id(other.thread_id) { }
-
-    ~IoServiceThread();
-
-    void join();
-  };
 
 } //namespace utils
 } //namespace aws

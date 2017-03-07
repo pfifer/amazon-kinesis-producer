@@ -19,6 +19,7 @@
 #include <aws/kinesis/core/pipeline.h>
 #include <aws/metrics/metrics_manager.h>
 #include <aws/monitoring/CloudWatchClient.h>
+#include <aws/utils/reporting_thread.h>
 
 namespace aws {
 namespace kinesis {
@@ -52,7 +53,7 @@ class KinesisProducer : boost::noncopyable {
     create_cw_client(ca_path);
     create_metrics_manager();
     report_outstanding();
-    message_drainer_ = aws::thread([this]() noexcept { this->drain_messages(); });
+    message_drainer_ = aws::utils::make_reporting_thread([this] { this->drain_messages(); });
   }
 
   ~KinesisProducer() {

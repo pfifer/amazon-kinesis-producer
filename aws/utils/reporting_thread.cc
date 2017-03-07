@@ -19,8 +19,8 @@ namespace {
   }
 }
 
-std::thread &&make_thread(std::function<void()> &&thread_function) {
-  std::thread t(reporting_thread_proc, std::move(thread_function));
+aws::thread &&make_reporting_thread(std::function<void()> &&thread_function) {
+  aws::thread t(reporting_thread_proc, std::move(thread_function));
 
   return std::move(t);
 }

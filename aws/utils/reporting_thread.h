@@ -2,15 +2,16 @@
 // Created by Pfifer, Justin on 3/7/17.
 //
 
-#include <thread>
-#include <functional>
-
 #ifndef AMAZON_KINESIS_PRODUCER_INTERNAL_REPORTING_THREAD_H
 #define AMAZON_KINESIS_PRODUCER_INTERNAL_REPORTING_THREAD_H
 
+#include <thread>
+#include <functional>
+#include <aws/mutex.h>
+
 namespace aws {
   namespace utils {
-    std::thread &&make_thread(std::function<void()> &&thread_function);
+    aws::thread &&make_reporting_thread(std::function<void()> &&thread_function);
   }
 }
 
