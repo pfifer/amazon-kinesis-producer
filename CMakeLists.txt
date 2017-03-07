@@ -59,7 +59,7 @@ set(SOURCE_FILES
         aws/utils/time_sensitive_queue.h
         aws/utils/token_bucket.h
         aws/utils/utils.cc
-        aws/utils/utils.h aws/utils/io_service_executor.cc aws/utils/AwsClientExecutor.cpp aws/utils/AwsClientExecutor.h aws/utils/NativeThread.cc aws/utils/NativeThread.h)
+        aws/utils/utils.h aws/utils/io_service_executor.cc aws/utils/AwsClientExecutor.cpp aws/utils/AwsClientExecutor.h aws/utils/reporting_thread.cc aws/utils/reporting_thread.h)
 
 
 
