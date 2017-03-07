@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <thread>
+#include <pthread.h>
 #include <getopt.h>
 
 
@@ -30,16 +31,18 @@ struct Configuration {
   int start_level = 2;
   bool threaded = false;
   bool enable_stack = true;
+  bool use_pthread = false;
 };
 
 struct option options[] = {
-        {"how",           required_argument, nullptr, 'o'},
-        {"in-catch",      no_argument,       nullptr, 'c'},
-        {"rethrow",       no_argument,       nullptr, 'r'},
-        {"start-level",   required_argument, nullptr, 's'},
-        {"threaded",      no_argument,       nullptr, 't'},
-        {"disable-stack", no_argument,       nullptr, 'd'},
-        {nullptr, 0,                         nullptr, 0}
+        {"how", required_argument, nullptr, 'o'},
+        {"in-catch", no_argument, nullptr, 'c'},
+        {"rethrow", no_argument, nullptr, 'r'},
+        {"start-level", required_argument, nullptr, 's'},
+        {"threaded", no_argument, nullptr, 't'},
+        {"disable-stack", no_argument, nullptr, 'd'},
+        {"use-pthread", no_argument, nullptr, 'p'},
+        {nullptr, 0, nullptr, 0}
 };
 
 #ifdef DISABLE_THREAD_EXCEPT
@@ -68,13 +71,19 @@ void run_test(const Configuration &config) EXCEPT_SIGNATURE {
   }
 }
 
+void *test_pthread_start(void *ucontext) {
+  auto config = static_cast<Configuration *>(ucontext);
+  run_test(*config);
+  return ucontext;
+}
+
 
 int main(int argc, char **argv) {
 
 
   Configuration config;
   int ch;
-  while ((ch = getopt_long(argc, argv, "o:s:crtd", options, nullptr)) != -1) {
+  while ((ch = getopt_long(argc, argv, "o:s:crtdp", options, nullptr)) != -1) {
     switch (ch) {
       case 'o':
         config.how = std::atoi(optarg);
@@ -94,6 +103,9 @@ int main(int argc, char **argv) {
       case 'd':
         config.enable_stack = false;
         break;
+      case 'p':
+        config.use_pthread = true;
+        break;
       default:
         std::cerr << "Unknown option '" << ch << "'" << std::endl;
         exit(1);
@@ -109,8 +121,17 @@ int main(int argc, char **argv) {
   }
 
   if (config.threaded) {
-    std::thread thread(run_test, config);
-    thread.join();
+    if (config.use_pthread) {
+      pthread_t thread_id;
+      int res = pthread_create(&thread_id, nullptr, test_pthread_start, &config);
+      if (res != 0) {
+        throw std::system_error(res, std::generic_category());
+      }
+      pthread_join(thread_id, nullptr);
+    } else {
+      std::thread thread(run_test, config);
+      thread.join();
+    }
   } else {
     try {
       run_test(config);

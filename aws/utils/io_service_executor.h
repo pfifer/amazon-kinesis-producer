@@ -73,6 +73,8 @@ class SteadyTimerScheduledCallback : boost::noncopyable,
   boost::asio::steady_timer timer_;
 };
 
+class IoServiceThread;
+
 class IoServiceExecutor : boost::noncopyable,
                           public Executor {
  public:
@@ -112,9 +114,6 @@ class IoServiceExecutor : boost::noncopyable,
   }
 
  private:
-  static void thread_proc(IoServiceExecutor* executor) {
-    executor->io_service_->run();
-  }
   using CbPtr = std::shared_ptr<SteadyTimerScheduledCallback>;
 
   void clean_up() {
@@ -144,12 +143,26 @@ class IoServiceExecutor : boost::noncopyable,
 
   std::shared_ptr<boost::asio::io_service> io_service_;
   boost::asio::io_service::work w_;
-  std::vector<aws::thread> threads_;
+  std::vector<IoServiceThread> threads_;
   std::list<CbPtr> callbacks_;
   aws::utils::SpinLock clean_up_mutex_;
   aws::utils::ConcurrentLinkedQueue<CbPtr> callbacks_clq_;
   SteadyTimerScheduledCallback clean_up_cb_;
 };
+
+  class IoServiceThread {
+  private:
+    pthread_t thread_id;
+  public:
+    IoServiceThread(IoServiceExecutor* executor);
+
+    IoServiceThread(IoServiceThread&) = delete;
+    IoServiceThread(IoServiceThread&& other) : thread_id(other.thread_id) { }
+
+    ~IoServiceThread();
+
+    void join();
+  };
 
 } //namespace utils
 } //namespace aws
