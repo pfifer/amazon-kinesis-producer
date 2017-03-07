@@ -46,7 +46,7 @@ struct option options[] = {
         {nullptr, 0, nullptr, 0}
 };
 
-#ifdef DISABLE_THREAD_EXCEPT
+#ifdef ENABLE_THREAD_NOEXCEPT
 #define EXCEPT_SIGNATURE noexcept
 #else
 #define EXCEPT_SIGNATURE
