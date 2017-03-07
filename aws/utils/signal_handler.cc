@@ -14,6 +14,7 @@
 #include "signal_handler.h"
 #include "writer_methods.h"
 #include "backtrace/backtrace.h"
+#include "aws/build_info.h"
 
 #include <signal.h>
 #include <unistd.h>
@@ -22,7 +23,6 @@
 #include <exception>
 #include <system_error>
 
-#define BUILD_VERSION "BUILD(" __DATE__ " - " __TIME__ ")"
 
 static size_t signal_message_sizes[NSIG];
 
@@ -64,6 +64,10 @@ static void write_report_end() {
   WRITE_MESSAGE("----\n");
 }
 
+static void write_build_info() {
+  WRITE_MESSAGE("Build: " BUILD_VERSION "\n");
+}
+
 static void signal_handler(int, siginfo_t *info, void *) {
   write_report_start();
   if (info->si_signo == SIGUSR1) {
@@ -73,6 +77,7 @@ static void signal_handler(int, siginfo_t *info, void *) {
   } else {
     write_error_header();
   }
+  write_build_info();
   WRITE_MESSAGE("Signal: ");
 
   switch (info->si_signo) {
@@ -139,6 +144,7 @@ static void signal_handler(int, siginfo_t *info, void *) {
 static void print_stack_trace_message(const char* message) {
   write_report_start();
   WRITE_MESSAGE("[INFO]\n");
+  write_build_info();
   ::aws::utils::writer::write_message(message, strlen(message));
   write_stack_trace();
   write_error_tail();
@@ -150,7 +156,8 @@ static std::terminate_handler existing_handler = nullptr;
 static void report_terminate() {
   write_report_start();
   write_error_header();
-  WRITE_MESSAGE("Terminate Called: " BUILD_VERSION "\n");
+  write_build_info();
+  WRITE_MESSAGE("Terminate Called for unhandled exception.\n");
   write_stack_trace();
   WRITE_MESSAGE("---END INFO---\n");
   write_report_end();

@@ -4,7 +4,6 @@
 
 #include "reporting_thread.h"
 
-using namespace aws::utils;
 
 #ifdef ENABLE_THREAD_NOEXCEPT
 #define EXCEPT_SIGNATURE noexcept
@@ -19,7 +18,7 @@ namespace {
   }
 }
 
-aws::thread &&make_reporting_thread(std::function<void()> &&thread_function) {
+aws::thread &&aws::utils::make_reporting_thread(std::function<void()> &&thread_function) {
   aws::thread t(reporting_thread_proc, std::move(thread_function));
 
   return std::move(t);
