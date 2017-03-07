@@ -9,6 +9,7 @@
 #include <pthread.h>
 #include <getopt.h>
 #include <system_error>
+#include "aws/utils/reporting_thread.h"
 
 
 #include "levels/terminate_level_1.h"
@@ -131,7 +132,7 @@ int main(int argc, char **argv) {
       }
       pthread_join(thread_id, nullptr);
     } else {
-      std::thread thread(run_test, config);
+      std::thread thread = aws::utils::make_reporting_thread([&config] { run_test(config); });
       thread.join();
     }
   } else {
