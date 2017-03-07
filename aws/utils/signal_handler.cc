@@ -55,8 +55,8 @@ static void write_error_header() {
 
 static void write_info_header(const char* message, size_t message_size) {
   WRITE_MESSAGE("[INFO]\n");
-  ::aws::utils::writer::write_message(message, message_size);
   WRITE_MESSAGE("---BEGIN INFO---\n");
+  ::aws::utils::writer::write_message(message, message_size);
 }
 
 static void write_error_tail() {
