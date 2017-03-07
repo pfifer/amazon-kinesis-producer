@@ -3,10 +3,18 @@ project(amazon_kinesis_producer_internal)
 
 set(THIRD_PARTY_LIB_DIR "${amazon_kinesis_producer_internal_SOURCE_DIR}/third_party/lib")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
-if(CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_COMPILER_IS_GNUCXX)
     set(ADDL_LINK_CONFIG "-static-libstdc++")
-endif(CMAKE_COMPILER_IS_GNUCXX)
+endif (CMAKE_COMPILER_IS_GNUCXX)
 set(CMAKE_EXE_LINKER_FLAGS "-L${THIRD_PARTY_LIB_DIR} ${ADDL_LINK_CONFIG}")
+
+set(REPORTING_THREAD_SOURCES
+        aws/utils/reporting_thread.cc
+        aws/utils/reporting_thread.h
+        aws/utils/reporting_thread_executor.cc
+        aws/utils/reporting_thread_executor.h
+        aws/build_info.h)
+
 
 set(SOURCE_FILES
         aws/auth/mutable_static_creds_provider.h
@@ -59,38 +67,53 @@ set(SOURCE_FILES
         aws/utils/time_sensitive_queue.h
         aws/utils/token_bucket.h
         aws/utils/utils.cc
-        aws/utils/utils.h aws/utils/reporting_thread.cc aws/utils/reporting_thread.h aws/utils/reporting_thread_executor.cc aws/utils/reporting_thread_executor.h)
+        aws/utils/utils.h
+        ${REPORTING_THREAD_SOURCES})
 
 
-
-
-if(ENABLE_SEGFAULT_TRIGGER)
-    list(APPEND LOGGING_TRIGGERS aws/utils/segfault_signal.cc)
-    add_definitions(-DSEGFAULT_SIGNAL_ENABLED)
-endif(ENABLE_SEGFAULT_TRIGGER)
 
 set(TESTS_SOURCE
-    aws/utils/test/concurrent_hash_map_test.cc
-    aws/utils/test/concurrent_linked_queue_test.cc
-    aws/utils/test/spin_lock_test.cc
-    aws/utils/test/token_bucket_test.cc
-    aws/kinesis/core/test/aggregator_test.cc
-    aws/kinesis/core/test/ipc_manager_test.cc
-    aws/kinesis/core/test/kinesis_record_test.cc
-    aws/kinesis/core/test/limiter_test.cc
-    aws/kinesis/core/test/put_records_request_test.cc
-    aws/kinesis/core/test/reducer_test.cc
-    aws/kinesis/core/test/retrier_test.cc
-    aws/kinesis/core/test/shard_map_test.cc
-    aws/kinesis/core/test/test_utils.cc
-    aws/kinesis/core/test/test_utils.h
-    aws/kinesis/core/test/user_record_test.cc
-    aws/metrics/test/accumulator_test.cc
-    aws/metrics/test/metric_test.cc
-    aws/metrics/test/metrics_manager_test.cc aws/utils/reporting_thread_executor.cc aws/utils/reporting_thread_executor.h)
+        aws/utils/test/concurrent_hash_map_test.cc
+        aws/utils/test/concurrent_linked_queue_test.cc
+        aws/utils/test/spin_lock_test.cc
+        aws/utils/test/token_bucket_test.cc
+        aws/kinesis/core/test/aggregator_test.cc
+        aws/kinesis/core/test/ipc_manager_test.cc
+        aws/kinesis/core/test/kinesis_record_test.cc
+        aws/kinesis/core/test/limiter_test.cc
+        aws/kinesis/core/test/put_records_request_test.cc
+        aws/kinesis/core/test/reducer_test.cc
+        aws/kinesis/core/test/retrier_test.cc
+        aws/kinesis/core/test/shard_map_test.cc
+        aws/kinesis/core/test/test_utils.cc
+        aws/kinesis/core/test/test_utils.h
+        aws/kinesis/core/test/user_record_test.cc
+        aws/metrics/test/accumulator_test.cc
+        aws/metrics/test/metric_test.cc
+        aws/metrics/test/metrics_manager_test.cc)
 
 
+set(EXCEPTION_STACK_TRACE_TEST
+        aws/utils/test/terminate_handler_test.cpp
+        aws/utils/test/levels/terminate_level_1.cc
+        aws/utils/test/levels/terminate_level_1.h
+        aws/utils/test/levels/terminate_level.h
+        aws/utils/test/levels/terminate_level_2.cc
+        aws/utils/test/levels/terminate_level_2.h
+        aws/utils/test/levels/terminate_level_3.cc
+        aws/utils/test/levels/terminate_level_3.h)
 
+set(LOGGING_TRIGGERS
+        aws/utils/signal_handler.h
+        aws/utils/signal_handler.cc
+        aws/utils/backtrace/backtrace.h
+        aws/utils/writer_methods.h
+        aws/utils/writer_methods.cc
+        aws/utils/backtrace/gcc_backtrace.cc
+        aws/utils/backtrace/bsd_backtrace.cc
+        aws/utils/backtrace/null_backtrace.cc)
+
+set(BUILD_INFO_SOURCE aws/build_info.h)
 
 set(THIRD_PARTY_LIBS third_party/lib)
 set(THIRD_PARTY_INCLUDE third_party/include)
@@ -105,9 +128,6 @@ message(STATUS "Commit: ${COMMIT_DATA}")
 
 add_definitions(-DCOMMIT_DATA=${COMMIT_DATA})
 
-
-
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -115,25 +135,25 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     message(STATUS "GNU compiler enabling thread exception change.")
 endif ()
 
-if(UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE)
     set(LINUX TRUE)
-endif()
+endif ()
 
-if(LINUX)
+if (LINUX)
     set(ADDITIONAL_LIBS idn)
-endif()
+endif ()
 
 include(CheckLibraryExists)
-if(LINUX)
-    check_library_exists(rt clock_gettime "" HAVE_CLOCK_GETTIME )
-    if(NOT HAVE_CLOCK_GETTIME)
+if (LINUX)
+    check_library_exists(rt clock_gettime "" HAVE_CLOCK_GETTIME)
+    if (NOT HAVE_CLOCK_GETTIME)
         message(FATAL_ERROR "clock_gettime not found")
-    endif(NOT HAVE_CLOCK_GETTIME)
+    endif (NOT HAVE_CLOCK_GETTIME)
     set(LIBRT_LIBRARIES rt)
     check_library_exists(dl dlopen "" HAVE_DL_OPEN)
     if (NOT HAVE_DL_OPEN)
         message(FATAL_ERROR "dl_open not found")
-    endif(NOT HAVE_DL_OPEN)
+    endif (NOT HAVE_DL_OPEN)
     set(LIBDL_LIBRARIES dl)
 
     add_library(libIdn STATIC IMPORTED)
@@ -141,57 +161,44 @@ if(LINUX)
     set(LIBIDN_LIBRARIES idn)
 
 
-endif(LINUX)
+endif (LINUX)
 
 
-if(LINUX)
-  message(STATUS "Finding uuid")
+if (LINUX)
+    message(STATUS "Finding uuid")
 
-  find_library(UUID_LIBRARIES uuid NAMES libuuid.a)
+    find_library(UUID_LIBRARIES uuid NAMES libuuid.a)
 
-  if("${UUID_INCLUDE_DIR}" STREQUAL "UUID_INCLUDE_DIR-NOTFOUND" OR "${UUID_LIBRARIES}" STREQUAL "UUID_LIBRARIES-NOTFOUND")
-    message(FATAL_ERROR "Could not find uuid components")
-  else()
-    message(STATUS "  Uuid library: ${UUID_LIBRARIES}")
-  endif()
+    if ("${UUID_INCLUDE_DIR}" STREQUAL "UUID_INCLUDE_DIR-NOTFOUND" OR "${UUID_LIBRARIES}" STREQUAL "UUID_LIBRARIES-NOTFOUND")
+        message(FATAL_ERROR "Could not find uuid components")
+    else ()
+        message(STATUS "  Uuid library: ${UUID_LIBRARIES}")
+    endif ()
 
-  add_library(libUUID STATIC IMPORTED)
+    add_library(libUUID STATIC IMPORTED)
 
-endif()
+endif ()
 
 
-set(LOGGING_TRIGGERS
-    aws/utils/signal_handler.h
-    aws/utils/signal_handler.cc
-    aws/utils/segfault_signal.h
-    aws/utils/segfault_signal.cc
-    aws/utils/backtrace/backtrace.h
-    aws/utils/writer_methods.h
-    aws/utils/writer_methods.cc
-    aws/utils/backtrace/gcc_backtrace.cc
-    aws/utils/backtrace/bsd_backtrace.cc
-    aws/utils/backtrace/null_backtrace.cc
-    )
+
 
 include(CheckFunctionExists)
 check_library_exists(backtrace backtrace_state "backtrace.h" HAVE_LIB_BACKTRACE)
 check_function_exists(backtrace HAVE_BACKTRACE)
-if(HAVE_LIB_BACKTRACE OR FORCE_LIB_BACKTRACE)
+if (HAVE_LIB_BACKTRACE OR FORCE_LIB_BACKTRACE)
     message(">>>> Using LibBacktrace")
     add_library(libBacktrace STATIC IMPORTED)
     set_property(TARGET libBacktrace PROPERTY IMPORTED_LOCATION ${THIRD_PARTY_LIB_DIR}/libbacktrace.a)
     set(LIBBACKTRACE_LIBRARIES backtrace)
 
     add_definitions(-DLIB_BACKTRACE)
-elseif(HAVE_BACKTRACE)
+elseif (HAVE_BACKTRACE)
     message(">>>> Using Backtrace")
     add_definitions(-DBSD_BACKTRACE)
-else()
+else ()
     message(">>>> No Backtrace Support")
     add_definitions(-DNULL_BACKTRACE)
-endif()
-
-
+endif ()
 
 
 set(STATIC_LIBS
@@ -238,7 +245,7 @@ set_property(TARGET LibAwsMonitoring PROPERTY IMPORTED_LINK_INTERFACE_LIBRARIES 
 
 add_custom_target(invalidate_build ALL COMMAND ${CMAKE_COMMAND} -E touch "${amazon_kinesis_producer_internal_SOURCE_DIR}/aws/build_info.h")
 
-add_executable(kinesis_producer ${SOURCE_FILES} ${LOGGING_TRIGGERS} aws/kinesis/main.cc aws/build_info.h)
+add_executable(kinesis_producer ${SOURCE_FILES} ${LOGGING_TRIGGERS} aws/kinesis/main.cc)
 target_include_directories(kinesis_producer SYSTEM PUBLIC ${THIRD_PARTY_INCLUDE})
 target_link_libraries(kinesis_producer ${CMAKE_THREAD_LIBS_INIT} LibProto LibAwsCore LibAwsKinesis LibAwsMonitoring ${LIBBACKTRACE_LIBRARIES} ${STATIC_LIBS} ${UUID_LIBRARIES})
 
@@ -250,6 +257,6 @@ add_executable(tests ${SOURCE_FILES} ${TESTS_SOURCE} ${LOGGING_TRIGGERS} aws/kin
 target_include_directories(tests SYSTEM PUBLIC ${THIRD_PARTY_INCLUDE})
 target_link_libraries(tests ${CMAKE_THREAD_LIBS_INIT} LibProto LibAwsCore LibAwsKinesis LibAwsMonitoring ${LIBBACKTRACE_LIBRARIES} ${STATIC_LIBS} boost_unit_test_framework ${UUID_LIBRARIES})
 
-add_executable(stack_trace_test ${SOURCE_FILES} ${LOGGING_TRIGGERS} aws/utils/test/terminate_handler_test.cpp aws/utils/test/levels/terminate_level_1.cc aws/utils/test/levels/terminate_level_1.h aws/utils/test/levels/terminate_level.h aws/utils/test/levels/terminate_level_2.cc aws/utils/test/levels/terminate_level_2.h aws/utils/test/levels/terminate_level_3.cc aws/utils/test/levels/terminate_level_3.h)
+add_executable(stack_trace_test ${SOURCE_FILES} ${LOGGING_TRIGGERS} ${REPORTING_THREAD_SOURCES} ${EXCEPTION_STACK_TRACE_TEST} ${BUILD_INFO_SOURCE})
 target_include_directories(stack_trace_test SYSTEM PUBLIC ${THIRD_PARTY_INCLUDE})
 target_link_libraries(stack_trace_test ${CMAKE_THREAD_LIBS_INIT} LibProto LibAwsCore LibAwsKinesis LibAwsMonitoring ${LIBBACKTRACE_LIBRARIES} ${STATIC_LIBS} boost_unit_test_framework ${UUID_LIBRARIES})
