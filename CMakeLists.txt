@@ -59,7 +59,7 @@ set(SOURCE_FILES
         aws/utils/time_sensitive_queue.h
         aws/utils/token_bucket.h
         aws/utils/utils.cc
-        aws/utils/utils.h aws/utils/io_service_executor.cc aws/utils/AwsClientExecutor.cpp aws/utils/AwsClientExecutor.h)
+        aws/utils/utils.h aws/utils/io_service_executor.cc aws/utils/AwsClientExecutor.cpp aws/utils/AwsClientExecutor.h aws/utils/NativeThread.cc aws/utils/NativeThread.h)
 
 
 
@@ -94,6 +94,16 @@ set(TESTS_SOURCE
 
 set(THIRD_PARTY_LIBS third_party/lib)
 set(THIRD_PARTY_INCLUDE third_party/include)
+
+execute_process(COMMAND git log --pretty=format:%H
+        COMMAND head -1
+        WORKING_DIRECTORY ${amazon_kinesis_producer_internal_SOURCE_DIR}
+        OUTPUT_VARIABLE COMMIT_DATA
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+message(STATUS "Commit: ${COMMIT_DATA}")
+
+add_definitions(-DCOMMIT_DATA=${COMMIT_DATA})
 
 
 
@@ -226,8 +236,9 @@ add_library(LibAwsMonitoring STATIC IMPORTED)
 set_property(TARGET LibAwsMonitoring PROPERTY IMPORTED_LOCATION ${THIRD_PARTY_LIB_DIR}/libaws-cpp-sdk-monitoring.a)
 set_property(TARGET LibAwsMonitoring PROPERTY IMPORTED_LINK_INTERFACE_LIBRARIES LibAwsCore)
 
+add_custom_target(invalidate_build ALL COMMAND ${CMAKE_COMMAND} -E touch "${amazon_kinesis_producer_internal_SOURCE_DIR}/aws/build_info.h")
 
-add_executable(kinesis_producer ${SOURCE_FILES} ${LOGGING_TRIGGERS} aws/kinesis/main.cc)
+add_executable(kinesis_producer ${SOURCE_FILES} ${LOGGING_TRIGGERS} aws/kinesis/main.cc aws/build_info.h)
 target_include_directories(kinesis_producer SYSTEM PUBLIC ${THIRD_PARTY_INCLUDE})
 target_link_libraries(kinesis_producer ${CMAKE_THREAD_LIBS_INIT} LibProto LibAwsCore LibAwsKinesis LibAwsMonitoring ${LIBBACKTRACE_LIBRARIES} ${STATIC_LIBS} ${UUID_LIBRARIES})
 

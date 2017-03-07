@@ -3,7 +3,7 @@
 //
 
 #include "aws/utils/signal_handler.h"
-
+#include "aws/build_info.h"
 #include <iostream>
 #include <thread>
 #include <pthread.h>
@@ -81,6 +81,7 @@ void *test_pthread_start(void *ucontext) {
 
 int main(int argc, char **argv) {
 
+  std::cout << "Build Version: " << BUILD_VERSION << std::endl;
 
   Configuration config;
   int ch;

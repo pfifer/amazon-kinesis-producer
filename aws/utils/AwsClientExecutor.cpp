@@ -14,9 +14,13 @@ using namespace aws::utils;
 #define EXCEPT_SIGNATURE
 #endif
 
+static void real_thread_proc(std::function<void()> &&fx) EXCEPT_SIGNATURE {
+  fx();
+}
+
 
 bool AwsClientExecutor::SubmitToThread(std::function<void()> &&fx) {
-  std::thread t([fx]() EXCEPT_SIGNATURE { fx(); });
+  std::thread t(real_thread_proc, std::move(fx));
   t.detach();
   return true;
 }
