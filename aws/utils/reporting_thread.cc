@@ -18,8 +18,8 @@ namespace {
   }
 }
 
-aws::thread &&aws::utils::make_reporting_thread(std::function<void()> &&thread_function) {
+aws::thread aws::utils::make_reporting_thread(std::function<void()> &&thread_function) {
   aws::thread t(reporting_thread_proc, std::move(thread_function));
 
-  return std::move(t);
+  return t;
 }

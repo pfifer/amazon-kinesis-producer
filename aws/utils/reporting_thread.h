@@ -11,7 +11,7 @@
 
 namespace aws {
   namespace utils {
-    aws::thread &&make_reporting_thread(std::function<void()> &&thread_function);
+    aws::thread make_reporting_thread(std::function<void()> &&thread_function);
   }
 }
 

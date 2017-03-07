@@ -24,6 +24,7 @@
 #include <system_error>
 
 
+#define MESSAGE_AND_SIZE(msg) (msg), (sizeof(msg) - 1)
 static size_t signal_message_sizes[NSIG];
 
 static volatile bool throw_exception = false;
@@ -52,8 +53,18 @@ static void write_error_header() {
   WRITE_MESSAGE("---BEGIN ERROR----\n");
 }
 
+static void write_info_header(const char* message, size_t message_size) {
+  WRITE_MESSAGE("[INFO]\n");
+  ::aws::utils::writer::write_message(message, message_size);
+  WRITE_MESSAGE("---BEGIN INFO---\n");
+}
+
 static void write_error_tail() {
   WRITE_MESSAGE("---END ERROR---\n");
+}
+
+static void write_info_tail() {
+  WRITE_MESSAGE("---END INFO---\n");
 }
 
 static void write_report_start() {
@@ -71,9 +82,7 @@ static void write_build_info() {
 static void signal_handler(int, siginfo_t *info, void *) {
   write_report_start();
   if (info->si_signo == SIGUSR1) {
-    WRITE_MESSAGE("[INFO]\n");
-    WRITE_MESSAGE("User Requested Stack Trace\n");
-    WRITE_MESSAGE("---BEGIN INFO---\n");
+    write_info_header(MESSAGE_AND_SIZE("User Requested Stack Trace\n"));
   } else {
     write_error_header();
   }
@@ -124,7 +133,7 @@ static void signal_handler(int, siginfo_t *info, void *) {
   WRITE_MESSAGE("\n");
   write_stack_trace();
   if (info->si_signo == SIGUSR1) {
-    WRITE_MESSAGE("---END INFO---\n");
+    write_info_tail();
   } else {
     write_error_tail();
   }
@@ -143,11 +152,10 @@ static void signal_handler(int, siginfo_t *info, void *) {
 
 static void print_stack_trace_message(const char* message) {
   write_report_start();
-  WRITE_MESSAGE("[INFO]\n");
+  write_info_header(message, strlen(message));
   write_build_info();
-  ::aws::utils::writer::write_message(message, strlen(message));
   write_stack_trace();
-  write_error_tail();
+  write_info_tail();
   write_report_end();
 }
 
@@ -156,10 +164,10 @@ static std::terminate_handler existing_handler = nullptr;
 static void report_terminate() {
   write_report_start();
   write_error_header();
-  write_build_info();
   WRITE_MESSAGE("Terminate Called for unhandled exception.\n");
+  write_build_info();
   write_stack_trace();
-  WRITE_MESSAGE("---END INFO---\n");
+  write_error_tail();
   write_report_end();
   if (existing_handler != nullptr) {
     (*existing_handler)();
