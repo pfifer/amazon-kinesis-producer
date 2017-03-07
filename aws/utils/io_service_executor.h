@@ -76,32 +76,13 @@ class SteadyTimerScheduledCallback : boost::noncopyable,
 class IoServiceExecutor : boost::noncopyable,
                           public Executor {
  public:
-  IoServiceExecutor(size_t num_threads)
-      : io_service_(std::make_shared<boost::asio::io_service>()),
-        w_(*io_service_),
-        clean_up_cb_(
-            [this] { this->clean_up(); },
-            *io_service_,
-            Clock::now() + std::chrono::seconds(1)) {
-    for (size_t i = 0; i < num_threads; i++) {
-      threads_.emplace_back([this]() noexcept { this->io_service_->run(); });
-    }
-  }
+  IoServiceExecutor(size_t num_threads);
 
 
 
-  ~IoServiceExecutor() {
-    w_.~work();
-    io_service_->stop();
-    for (auto& t : threads_) {
-      t.join();
-    }
-    clean_up();
-  }
+  ~IoServiceExecutor();
 
-  void submit(Func f) override {
-    io_service_->post(std::move(f));
-  };
+  void submit(Func f) override;
 
   std::shared_ptr<ScheduledCallback> schedule(Func f,
                                               TimePoint at) override {

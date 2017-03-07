@@ -43,7 +43,7 @@ namespace this_thread = threading_namespace::this_thread;
 
 using shared_mutex = boost::shared_mutex;
 
-using thread = boost::thread;
+using thread = threading_namespace::thread;
 using condition_variable = threading_namespace::condition_variable;
 using mutex = threading_namespace::mutex;
 using recursive_mutex = threading_namespace::recursive_mutex;
