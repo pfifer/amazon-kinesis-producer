@@ -59,7 +59,7 @@ set(SOURCE_FILES
         aws/utils/time_sensitive_queue.h
         aws/utils/token_bucket.h
         aws/utils/utils.cc
-        aws/utils/utils.h aws/utils/io_service_executor.cc)
+        aws/utils/utils.h aws/utils/io_service_executor.cc aws/utils/AwsClientExecutor.cpp aws/utils/AwsClientExecutor.h)
 
 
 
@@ -87,7 +87,7 @@ set(TESTS_SOURCE
     aws/kinesis/core/test/user_record_test.cc
     aws/metrics/test/accumulator_test.cc
     aws/metrics/test/metric_test.cc
-    aws/metrics/test/metrics_manager_test.cc aws/utils/io_service_executor.cc)
+    aws/metrics/test/metrics_manager_test.cc)
 
 
 
@@ -101,7 +101,7 @@ set(THIRD_PARTY_INCLUDE third_party/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    add_definitions(-DDISABLE_THREAD_EXCEPT)
+    add_definitions(-DENABLE_THREAD_NOEXCEPT)
     message(STATUS "GNU compiler enabling thread exception change.")
 endif ()
 
