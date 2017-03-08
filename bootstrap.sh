@@ -169,6 +169,14 @@ if [ ! -d "curl-7.47.0" ]; then
   cd ..
 fi
 
+if [ ! -d "libuuid-1.0.3" ]; then
+  tar xf ~/libuuid-1.0.3.tar.gz
+  cd libuuid-1.0.3
+  conf --disable-shared
+  make -j
+  make install
+fi
+
 # AWS C++ SDK
 if [ ! -d "aws-sdk-cpp" ]; then
   git clone https://github.com/awslabs/aws-sdk-cpp.git aws-sdk-cpp
