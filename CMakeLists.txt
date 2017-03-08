@@ -169,7 +169,7 @@ if (LINUX)
     message(STATUS "Finding uuid")
 
     find_library(UUID_LIBRARIES uuid NAMES libuuid.a
-            HINTS ${THIRD_PARTY_DIR})
+            HINTS "${THIRD_PARTY_LIB_DIR}")
 
     if ("${UUID_INCLUDE_DIR}" STREQUAL "UUID_INCLUDE_DIR-NOTFOUND" OR "${UUID_LIBRARIES}" STREQUAL "UUID_LIBRARIES-NOTFOUND")
         message(FATAL_ERROR "Could not find uuid components")
