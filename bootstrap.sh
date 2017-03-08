@@ -169,6 +169,14 @@ if [ ! -d "curl-7.47.0" ]; then
   cd ..
 fi
 
+if [ ! -d "libidn-1.33" ]; then
+  tar xf ~/libidn-1.33.tar.gz
+  cd libidn-1.33
+  conf --disable-shared
+  make -j
+  make install
+fi
+
 if [ ! -d "libuuid-1.0.3" ]; then
   tar xf ~/libuuid-1.0.3.tar.gz
   cd libuuid-1.0.3
