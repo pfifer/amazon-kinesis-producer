@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(amazon_kinesis_producer_internal)
 
-set(THIRD_PARTY_LIB_DIR "${amazon_kinesis_producer_internal_SOURCE_DIR}/third_party/lib")
+set(THIRD_PARTY_DIR "${amazon_kinesis_producer_internal_SOURCE_DIR}/third_party")
+set(THIRD_PARTY_LIB_DIR "${THIRD_PARTY_DIR}/lib")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 if (CMAKE_COMPILER_IS_GNUCXX)
     set(ADDL_LINK_CONFIG "-static-libstdc++")
@@ -167,7 +168,8 @@ endif (LINUX)
 if (LINUX)
     message(STATUS "Finding uuid")
 
-    find_library(UUID_LIBRARIES uuid NAMES libuuid.a)
+    find_library(UUID_LIBRARIES uuid NAMES libuuid.a
+            HINTS ${THIRD_PARTY_DIR})
 
     if ("${UUID_INCLUDE_DIR}" STREQUAL "UUID_INCLUDE_DIR-NOTFOUND" OR "${UUID_LIBRARIES}" STREQUAL "UUID_LIBRARIES-NOTFOUND")
         message(FATAL_ERROR "Could not find uuid components")
