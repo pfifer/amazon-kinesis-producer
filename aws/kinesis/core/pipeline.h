@@ -26,8 +26,6 @@
 #include <aws/kinesis/KinesisClient.h>
 #include <aws/metrics/metrics_manager.h>
 
-#include <aws/utils/signal_handler.h>
-
 namespace aws {
 namespace kinesis {
 namespace core {
