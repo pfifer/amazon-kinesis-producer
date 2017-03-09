@@ -120,7 +120,6 @@ static void signal_handler(int, siginfo_t *info, void *) {
       break;
     case SIGUSR1:
       WRITE_MESSAGE("SIGUSR1");
-      throw_exception.store(true);
       break;
     default:
       WRITE_MESSAGE("Unhandled Signal(");
@@ -149,6 +148,23 @@ static void signal_handler(int, siginfo_t *info, void *) {
     abort();
   }
 
+}
+
+static void usr2_signal_handler(int, siginfo_t *info, void*) {
+  write_report_start();
+  if (info->si_signo == SIGUSR2) {
+    write_info_header(MESSAGE_AND_SIZE("Got SIGUSR2 Triggering Exception\n"));
+    write_build_info();
+    throw_exception.store(true);
+    write_info_tail();
+  } else {
+    write_error_header();
+    WRITE_MESSAGE("Unknown signal: ");
+    WRITE_CODE(info->si_signo);
+    WRITE_MESSAGE("\n")
+    write_error_tail();
+  }
+  write_report_end();
 }
 
 static void print_stack_trace_message(const char* message) {
@@ -223,6 +239,18 @@ namespace aws {
       //
       sigaction(SIGUSR1, &action, NULL);
 
+      //
+      // We use SIGUSR2 to trigger specific debug actions
+      //
+      sigset_t usr2_mask;
+      sigemptyset(&mask);
+      sigaddset(&mask, SIGUSR2);
+      struct sigaction usr2_action = {0};
+      usr2_action .sa_sigaction = &usr2_signal_handler;
+      usr2_action .sa_flags = SA_SIGINFO;
+      usr2_action .sa_mask = usr2_mask;
+
+      sigaction(SIGUSR2, &usr2_action, NULL);
       //
       // Ignoring this since curl/OpenSSL can trigger them and something is wrong with it's ignore
       //
