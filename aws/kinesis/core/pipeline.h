@@ -145,7 +145,6 @@ class Pipeline : boost::noncopyable {
                auto& /*sdk_req*/,
                auto& outcome,
                auto sdk_ctx) {
-          aws::utils::throw_test_exception();
           auto ctx = std::dynamic_pointer_cast<PutRecordsContext>(
               std::const_pointer_cast<Aws::Client::AsyncCallerContext>(
                   sdk_ctx));

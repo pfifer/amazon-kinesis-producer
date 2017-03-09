@@ -189,6 +189,8 @@ void KinesisProducer::drain_messages() {
       buf.push_back(std::move(s));
     }
 
+    aws::utils::throw_test_exception();
+
     if (!buf.empty()) {
       std::vector<std::string> batch;
       std::swap(batch, buf);
