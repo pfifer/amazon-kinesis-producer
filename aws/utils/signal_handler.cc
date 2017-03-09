@@ -22,12 +22,13 @@
 #include <cstdlib>
 #include <exception>
 #include <system_error>
+#include <atomic>
 
 
 #define MESSAGE_AND_SIZE(msg) (msg), (sizeof(msg) - 1)
 static size_t signal_message_sizes[NSIG];
 
-static volatile bool throw_exception = false;
+static std::atomic<bool> throw_exception(false);
 
 void write_signal_description(int signal) {
   if (signal <= 0 || signal >= NSIG) {
@@ -119,7 +120,7 @@ static void signal_handler(int, siginfo_t *info, void *) {
       break;
     case SIGUSR1:
       WRITE_MESSAGE("SIGUSR1");
-      throw_exception = true;
+      throw_exception.store(true);
       break;
     default:
       WRITE_MESSAGE("Unhandled Signal(");
@@ -238,7 +239,8 @@ namespace aws {
 
 
     void throw_test_exception() {
-      if (throw_exception) {
+      bool expected_state = true;
+      if (throw_exception.compare_exchange_strong(expected_state, false, std::memory_order::memory_order_acq_rel, std::memory_order::memory_order_acq_rel)) {
         print_stack_trace_message("Exception throw start requested: " BUILD_VERSION "\n");
         throw std::system_error(std::make_error_code(std::errc::already_connected));
       }
