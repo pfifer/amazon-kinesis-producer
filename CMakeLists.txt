@@ -9,6 +9,14 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 endif (CMAKE_COMPILER_IS_GNUCXX)
 set(CMAKE_EXE_LINKER_FLAGS "-L${THIRD_PARTY_LIB_DIR} ${ADDL_LINK_CONFIG}")
 
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    add_definitions(-DENABLE_THREAD_NOEXCEPT)
+    message(STATUS "GNU compiler enabling thread exception change.")
+
+    add_compile_options("-fpermissive")
+    message(STATUS "Enable permissive bit shifts for g++")
+endif ()
+
 set(REPORTING_THREAD_SOURCES
         aws/utils/reporting_thread.cc
         aws/utils/reporting_thread.h
@@ -131,10 +139,7 @@ add_definitions(-DCOMMIT_DATA=${COMMIT_DATA})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    add_definitions(-DENABLE_THREAD_NOEXCEPT)
-    message(STATUS "GNU compiler enabling thread exception change.")
-endif ()
+
 
 if (UNIX AND NOT APPLE)
     set(LINUX TRUE)
@@ -161,12 +166,7 @@ if (LINUX)
     set_property(TARGET libIdn PROPERTY IMPORTED_LOCATION ${THIRD_PARTY_LIB_DIR}/libidn.a)
     set(LIBIDN_LIBRARIES idn)
 
-
-endif (LINUX)
-
-
-if (LINUX)
-    message(STATUS "Finding uuid")
+    message(STATUS "Finding uuid library")
 
     find_library(UUID_LIBRARIES uuid NAMES libuuid.a
             HINTS "${THIRD_PARTY_LIB_DIR}")
@@ -179,10 +179,7 @@ if (LINUX)
 
     add_library(libUUID STATIC IMPORTED)
 
-endif ()
-
-
-
+endif (LINUX)
 
 include(CheckFunctionExists)
 check_library_exists(backtrace backtrace_state "backtrace.h" HAVE_LIB_BACKTRACE)
