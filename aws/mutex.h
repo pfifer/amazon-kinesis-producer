@@ -18,6 +18,7 @@
 
 #if BOOST_OS_WINDOWS == 0
   #include <shared_mutex>
+  #include <mutex>
   #include <condition_variable>
   #include <thread>
 #endif
