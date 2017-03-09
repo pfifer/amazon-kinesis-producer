@@ -150,22 +150,6 @@ static void signal_handler(int, siginfo_t *info, void *) {
 
 }
 
-static void usr2_signal_handler(int, siginfo_t *info, void*) {
-  write_report_start();
-  if (info->si_signo == SIGUSR2) {
-    write_info_header(MESSAGE_AND_SIZE("Got SIGUSR2 Triggering Exception\n"));
-    write_build_info();
-    throw_exception.store(true);
-    write_info_tail();
-  } else {
-    write_error_header();
-    WRITE_MESSAGE("Unknown signal: ");
-    WRITE_CODE(info->si_signo);
-    WRITE_MESSAGE("\n")
-    write_error_tail();
-  }
-  write_report_end();
-}
 
 static void print_stack_trace_message(const char* message) {
   write_report_start();
@@ -199,6 +183,25 @@ static void install_termination_handler() {
   existing_handler = std::get_terminate();
   std::set_terminate(&report_terminate);
 }
+
+#ifdef DEBUG
+static void usr2_signal_handler(int, siginfo_t *info, void*) {
+  write_report_start();
+  if (info->si_signo == SIGUSR2) {
+    write_info_header(MESSAGE_AND_SIZE("Got SIGUSR2 Triggering Exception\n"));
+    write_build_info();
+    throw_exception.store(true);
+    write_info_tail();
+  } else {
+    write_error_header();
+    WRITE_MESSAGE("Unknown signal: ");
+    WRITE_CODE(info->si_signo);
+    WRITE_MESSAGE("\n")
+    write_error_tail();
+  }
+  write_report_end();
+}
+#endif
 
 namespace aws {
   namespace utils {
@@ -239,6 +242,7 @@ namespace aws {
       //
       sigaction(SIGUSR1, &action, NULL);
 
+#ifdef DEBUG
       //
       // We use SIGUSR2 to trigger specific debug actions
       //
@@ -251,6 +255,7 @@ namespace aws {
       usr2_action .sa_mask = usr2_mask;
 
       sigaction(SIGUSR2, &usr2_action, NULL);
+#endif
       //
       // Ignoring this since curl/OpenSSL can trigger them and something is wrong with it's ignore
       //
@@ -265,7 +270,7 @@ namespace aws {
     }
 
 
-
+#ifdef DEBUG
     void throw_test_exception() {
       bool expected_state = true;
       if (throw_exception.compare_exchange_strong(expected_state, false, std::memory_order::memory_order_acq_rel, std::memory_order::memory_order_acq_rel)) {
@@ -273,5 +278,6 @@ namespace aws {
         throw std::system_error(std::make_error_code(std::errc::already_connected));
       }
     }
+#endif
   }
 }
