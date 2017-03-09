@@ -47,14 +47,7 @@ struct option options[] = {
         {nullptr, 0, nullptr, 0}
 };
 
-#ifdef ENABLE_THREAD_NOEXCEPT
-#define EXCEPT_SIGNATURE noexcept
-#else
-#define EXCEPT_SIGNATURE
-#endif
-
-
-void run_test(const Configuration &config) EXCEPT_SIGNATURE {
+void run_test(const Configuration &config) {
   aws::utils::terminate_level_1 test;
   switch (config.start_level) {
     case 0:
