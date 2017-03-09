@@ -103,7 +103,7 @@ set(TESTS_SOURCE
 
 
 set(EXCEPTION_STACK_TRACE_TEST
-        aws/utils/test/terminate_handler_test.cpp
+        aws/utils/test/terminate_handler_test.cc
         aws/utils/test/levels/terminate_level_1.cc
         aws/utils/test/levels/terminate_level_1.h
         aws/utils/test/levels/terminate_level.h
