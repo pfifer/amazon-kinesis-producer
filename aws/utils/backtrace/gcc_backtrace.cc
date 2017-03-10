@@ -113,15 +113,15 @@ namespace {
     }
   }
 
-  void make_backtrace_with_fallback(int skip, bool signaled) {
-    std::thread::id empty_thread_id;
+  const std::thread::id empty_thread_id;
 
+  void make_backtrace_with_fallback(int skip, bool signaled) {
     uint32_t attempts = 0;
-    bool fallback = false;
     struct timespec ratp = {0};
     ratp.tv_nsec = 50 * 1000; // 50 microseconds
-    while (!backtrace_for.compare_exchange_strong(empty_thread_id, std::this_thread::get_id(), std::memory_order::memory_order_acq_rel,
-                                                    std::memory_order::memory_order_acq_rel)) {
+    std::thread::id expected = empty_thread_id;
+    while (!backtrace_for.compare_exchange_strong(expected, std::this_thread::get_id())) {
+      expected = empty_thread_id;
       attempts++;
       if (attempts > 5) {
         break;
