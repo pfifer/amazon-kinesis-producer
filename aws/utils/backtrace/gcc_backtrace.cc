@@ -25,6 +25,7 @@
 #include <backtrace.h>
 #include <atomic>
 #include <time.h>
+#include <thread>
 
 namespace {
 
@@ -32,7 +33,7 @@ namespace {
 
   bool is_initializing_ = true;
 
-  std::atomic<bool> is_in_backtrace(false);
+  std::atomic<std::thread::id> backtrace_for;
 
   void error_callback(void *data, const char *msg, int errnum) {
     if (is_initializing_) {
@@ -113,13 +114,13 @@ namespace {
   }
 
   void make_backtrace_with_fallback(int skip, bool signaled) {
-    bool expected = false;
+    std::thread::id empty_thread_id;
 
     uint32_t attempts = 0;
     bool fallback = false;
     struct timespec ratp = {0};
     ratp.tv_nsec = 50 * 1000; // 50 microseconds
-    while (!is_in_backtrace.compare_exchange_strong(expected, true, std::memory_order::memory_order_acq_rel,
+    while (!backtrace_for.compare_exchange_strong(empty_thread_id, std::this_thread::get_id(), std::memory_order::memory_order_acq_rel,
                                                     std::memory_order::memory_order_acq_rel)) {
       attempts++;
       if (attempts > 5) {
@@ -136,7 +137,7 @@ namespace {
       aws::utils::backtrace::last_ditch_backtrace();
     } else {
       make_backtrace_with_lib(skip, signaled);
-      is_in_backtrace.store(false);
+      backtrace_for.store(empty_thread_id);
     }
   }
 }
