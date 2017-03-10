@@ -15,14 +15,17 @@
 #define VARIED_BACKTRACE_H
 
 namespace aws {
-namespace utils {
-namespace backtrace {
+  namespace utils {
+    namespace backtrace {
 
-void initialize(const char* exe);
-void stack_trace_for_signal(int skip = 0, bool signaled = true);
+      void initialize(const char *exe);
 
-}
-}
+      void stack_trace_for_signal(int skip = 0, bool signaled = true);
+
+      void last_ditch_backtrace();
+
+    }
+  }
 }
 
 #endif // VARIED_BACKTRACE_H

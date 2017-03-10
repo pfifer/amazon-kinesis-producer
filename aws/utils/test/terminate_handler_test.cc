@@ -18,7 +18,10 @@
 #include <pthread.h>
 #include <getopt.h>
 #include <system_error>
+#include <atomic>
+#include <vector>
 #include "aws/utils/reporting_thread.h"
+
 
 
 #include "levels/terminate_level_1.h"
@@ -43,6 +46,7 @@ struct Configuration {
   bool threaded = false;
   bool enable_stack = true;
   bool use_pthread = false;
+  bool multi_threaded = false;
 };
 
 struct option options[] = {
@@ -53,6 +57,7 @@ struct option options[] = {
         {"threaded", no_argument, nullptr, 't'},
         {"disable-stack", no_argument, nullptr, 'd'},
         {"use-pthread", no_argument, nullptr, 'p'},
+        {"multi-threaded", no_argument, nullptr, 'm'},
         {nullptr, 0, nullptr, 0}
 };
 
@@ -75,6 +80,19 @@ void run_test(const Configuration &config) {
   }
 }
 
+std::atomic<bool> ready(false);
+
+void multi_run_test(const Configuration &config) {
+  while(!ready.load()) {
+    //
+    // Busy loop
+    //
+
+  }
+  run_test(config);
+}
+
+
 void *test_pthread_start(void *ucontext) {
   auto config = static_cast<Configuration *>(ucontext);
   run_test(*config);
@@ -88,7 +106,7 @@ int main(int argc, char **argv) {
 
   Configuration config;
   int ch;
-  while ((ch = getopt_long(argc, argv, "o:s:crtdp", options, nullptr)) != -1) {
+  while ((ch = getopt_long(argc, argv, "o:s:crtdpm", options, nullptr)) != -1) {
     switch (ch) {
       case 'o':
         config.how = std::atoi(optarg);
@@ -110,6 +128,9 @@ int main(int argc, char **argv) {
         break;
       case 'p':
         config.use_pthread = true;
+        break;
+      case 'm':
+        config.multi_threaded = true;
         break;
       default:
         std::cerr << "Unknown option '" << ch << "'" << std::endl;
@@ -134,8 +155,19 @@ int main(int argc, char **argv) {
       }
       pthread_join(thread_id, nullptr);
     } else {
-      std::thread thread = aws::utils::make_reporting_thread([&config] { run_test(config); });
-      thread.join();
+      if (config.multi_threaded) {
+        std::vector<std::thread> threads;
+        for(int i = 0; i < 4; ++i) {
+          threads.emplace_back(aws::utils::make_reporting_thread([&config] { multi_run_test(config); }));
+        }
+        ready.store(true);
+        for(auto iter = threads.begin(); iter != threads.end(); ++iter) {
+          iter->join();
+        }
+      } else {
+        std::thread thread = aws::utils::make_reporting_thread([&config] { run_test(config); });
+        thread.join();
+      }
     }
   } else {
     try {

@@ -23,12 +23,15 @@
 #include <exception>
 #include <system_error>
 #include <atomic>
+#include <mutex>
+#include <thread>
 
 
 #define MESSAGE_AND_SIZE(msg) (msg), (sizeof(msg) - 1)
 static size_t signal_message_sizes[NSIG];
 
 static std::atomic<bool> throw_exception(false);
+static std::atomic<bool> in_signal_processing(false);
 
 void write_signal_description(int signal) {
   if (signal <= 0 || signal >= NSIG) {
@@ -54,7 +57,7 @@ static void write_error_header() {
   WRITE_MESSAGE("---BEGIN ERROR----\n");
 }
 
-static void write_info_header(const char* message, size_t message_size) {
+static void write_info_header(const char *message, size_t message_size) {
   WRITE_MESSAGE("[INFO]\n");
   WRITE_MESSAGE("---BEGIN INFO---\n");
   ::aws::utils::writer::write_message(message, message_size);
@@ -77,10 +80,17 @@ static void write_report_end() {
 }
 
 static void write_build_info() {
-  WRITE_MESSAGE("Build: " BUILD_VERSION "\n");
+  WRITE_MESSAGE("Build: "
+                        BUILD_VERSION
+                        "\n");
+}
+
+static void acquire_and_write_stack_trace() {
+
 }
 
 static void signal_handler(int, siginfo_t *info, void *) {
+
   write_report_start();
   if (info->si_signo == SIGUSR1) {
     write_info_header(MESSAGE_AND_SIZE("User Requested Stack Trace\n"));
@@ -131,7 +141,8 @@ static void signal_handler(int, siginfo_t *info, void *) {
   WRITE_MESSAGE("Description: ");
   write_signal_description(info->si_signo);
   WRITE_MESSAGE("\n");
-  write_stack_trace();
+
+
   if (info->si_signo == SIGUSR1) {
     write_info_tail();
   } else {
@@ -147,11 +158,10 @@ static void signal_handler(int, siginfo_t *info, void *) {
 
     abort();
   }
-
+  in_signal_processing.store(false);
 }
 
-
-static void print_stack_trace_message(const char* message) {
+static void print_stack_trace_message(const char *message) {
   write_report_start();
   write_info_header(message, strlen(message));
   write_build_info();
@@ -161,15 +171,40 @@ static void print_stack_trace_message(const char* message) {
 }
 
 static std::terminate_handler existing_handler = nullptr;
+static std::mutex exception_backtrace_mutex;
+
 
 static void report_terminate() {
+
+  bool locked = false;
+  try {
+    exception_backtrace_mutex.lock();
+    locked = true;
+  } catch (...) {
+    WRITE_MESSAGE("Failed to acquire lock, might get messy\n");
+  }
+
   write_report_start();
   write_error_header();
   WRITE_MESSAGE("Terminate Called for unhandled exception.\n");
   write_build_info();
-  write_stack_trace();
+  if (!in_signal_processing.load()) {
+    write_stack_trace();
+  }
   write_error_tail();
   write_report_end();
+  if (locked) {
+    exception_backtrace_mutex.unlock();
+  }
+  //
+  // Sleep for 10ms to allow any other activity before aborting.
+  //
+  using namespace std::chrono_literals;
+  std::this_thread::sleep_for(100ms);
+
+  //
+  // Chain to the next handler, which will usually be the default std::terminate handler.
+  //
   if (existing_handler != nullptr) {
     (*existing_handler)();
   }
