@@ -124,18 +124,17 @@ namespace {
                                                     std::memory_order::memory_order_acq_rel)) {
       attempts++;
       if (attempts > 5) {
-        WRITE_MESSAGE("Failed to get stack trace atomic.  Falling back to BSD backtrace.\n")
-        fallback = true;
         break;
       }
       if (nanosleep(&ratp, nullptr) != 0) {
-        fallback = true;
         break;
       }
     }
-    if (fallback) {
+    if (backtrace_for.load() != std::this_thread::get_id()) {
+      WRITE_MESSAGE("Problem getting exclusive access to libbacktrace.  Falling back to BSD backtrace.\n")
       aws::utils::backtrace::last_ditch_backtrace();
     } else {
+      std::thread::id current_thread = std::this_thread::get_id();
       make_backtrace_with_lib(skip, signaled);
       backtrace_for.store(empty_thread_id);
     }
