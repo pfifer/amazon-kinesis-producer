@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
-project(amazon_kinesis_producer_internal)
+project(amazon_kinesis_producer)
 
-set(THIRD_PARTY_DIR "${amazon_kinesis_producer_internal_SOURCE_DIR}/third_party")
+set(THIRD_PARTY_DIR "${amazon_kinesis_producer_SOURCE_DIR}/third_party")
 set(THIRD_PARTY_LIB_DIR "${THIRD_PARTY_DIR}/lib")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 if (CMAKE_COMPILER_IS_GNUCXX)
-    set(ADDL_LINK_CONFIG "-static-libstdc++")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+    set(ADDL_LINK_CONFIG "-static-libstdc++ -static-libasan")
 endif (CMAKE_COMPILER_IS_GNUCXX)
 set(CMAKE_EXE_LINKER_FLAGS "-L${THIRD_PARTY_LIB_DIR} ${ADDL_LINK_CONFIG}")
 
@@ -129,7 +130,7 @@ set(THIRD_PARTY_INCLUDE third_party/include)
 
 execute_process(COMMAND git log --pretty=format:%H
         COMMAND head -1
-        WORKING_DIRECTORY ${amazon_kinesis_producer_internal_SOURCE_DIR}
+        WORKING_DIRECTORY ${amazon_kinesis_producer_SOURCE_DIR}
         OUTPUT_VARIABLE COMMIT_DATA
         OUTPUT_STRIP_TRAILING_WHITESPACE)
 
@@ -242,7 +243,7 @@ add_library(LibAwsMonitoring STATIC IMPORTED)
 set_property(TARGET LibAwsMonitoring PROPERTY IMPORTED_LOCATION ${THIRD_PARTY_LIB_DIR}/libaws-cpp-sdk-monitoring.a)
 set_property(TARGET LibAwsMonitoring PROPERTY IMPORTED_LINK_INTERFACE_LIBRARIES LibAwsCore)
 
-add_custom_target(invalidate_build ALL COMMAND ${CMAKE_COMMAND} -E touch "${amazon_kinesis_producer_internal_SOURCE_DIR}/aws/build_info.h")
+add_custom_target(invalidate_build ALL COMMAND ${CMAKE_COMMAND} -E touch "${amazon_kinesis_producer_SOURCE_DIR}/aws/build_info.h")
 
 add_executable(kinesis_producer ${SOURCE_FILES} ${LOGGING_TRIGGERS} aws/kinesis/main.cc)
 target_include_directories(kinesis_producer SYSTEM PUBLIC ${THIRD_PARTY_INCLUDE})

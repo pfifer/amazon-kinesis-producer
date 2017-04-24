@@ -197,7 +197,7 @@ static void report_terminate() {
     exception_backtrace_mutex.unlock();
   }
   //
-  // Sleep for 10ms to allow any other activity before aborting.
+  // Sleep for 100ms to allow any other activity before aborting.
   //
   using namespace std::chrono_literals;
   std::this_thread::sleep_for(100ms);

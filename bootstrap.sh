@@ -151,12 +151,21 @@ if [ ! -d "protobuf-2.6.1" ]; then
   cd ..
 fi
 
-if [ ! -d "libidn-1.33" ]; then
-  tar xf ~/libidn-1.33.tar.gz
-  cd libidn-1.33
-  conf --disable-shared
-  make -j
-  make install
+if [  $(uname) == 'Linux'  ]; then
+  if [ ! -d "libidn-1.33" ]; then
+    tar xf ~/libidn-1.33.tar.gz
+    cd libidn-1.33
+    conf --disable-shared
+    make -j
+    make install
+  fi
+  if [ ! -d "libuuid-1.0.3" ]; then
+    tar xf ~/libuuid-1.0.3.tar.gz
+    cd libuuid-1.0.3
+    conf --disable-shared
+    make -j
+    make install
+  fi
 fi
 
 # libcurl
@@ -175,22 +184,13 @@ if [ ! -d "curl-7.47.0" ]; then
   cd ..
 fi
 
-
-if [ ! -d "libuuid-1.0.3" ]; then
-  tar xf ~/libuuid-1.0.3.tar.gz
-  cd libuuid-1.0.3
-  conf --disable-shared
-  make -j
-  make install
-fi
-
 # AWS C++ SDK
 if [ ! -d "aws-sdk-cpp" ]; then
   git clone https://github.com/awslabs/aws-sdk-cpp.git aws-sdk-cpp
   pushd aws-sdk-cpp
   git checkout 1.0.5
   popd
-
+fi
   rm -rf aws-sdk-cpp-build
   mkdir aws-sdk-cpp-build
 
@@ -206,6 +206,7 @@ if [ ! -d "aws-sdk-cpp" ]; then
     -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
     -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
     -DENABLE_TESTING="OFF" \
+    -DCMAKE_FIND_FRAMEWORK=LAST \
     ../aws-sdk-cpp
   make -j 4
   make install
@@ -215,15 +216,9 @@ if [ ! -d "aws-sdk-cpp" ]; then
   for f in $(find $INSTALL_DIR -name "libaws-cpp-sdk*.a"); do
     mv $f "$INSTALL_DIR/lib/"
   done
-fi
+#fi
 
 cd ..
 
-ln -sf ./third_party/boost_?_*_*/b2* b2
-
 set +e
 set +x
-
-echo "***************************************"
-echo "Bootstrap complete. Run ./b2 to build."
-echo "***************************************"

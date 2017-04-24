@@ -15,10 +15,13 @@
 #include "reporting_thread_executor.h"
 
 using namespace aws::utils;
+using namespace Aws::Utils::Threading;
 
-bool reporting_thread_executor::SubmitToThread(std::function<void()> &&function) {
-  std::thread t = make_reporting_thread(std::move(function));
-  t.detach();
+reporting_thread_executor::reporting_thread_executor() : PooledThreadExecutor(8) {}
 
-  return true;
-}
+//bool reporting_thread_executor::SubmitToThread(std::function<void()> &&function) {
+//  std::thread t = make_reporting_thread(std::move(function));
+//  t.detach();
+//
+//  return true;
+//}

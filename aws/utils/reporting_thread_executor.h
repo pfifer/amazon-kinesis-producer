@@ -19,10 +19,13 @@
 
 namespace aws {
   namespace utils {
-    class reporting_thread_executor : public Aws::Utils::Threading::DefaultExecutor {
+    class reporting_thread_executor : public Aws::Utils::Threading::PooledThreadExecutor {
 
-    protected:
-      bool SubmitToThread(std::function<void()> &&function) override;
+    public:
+      reporting_thread_executor();
+
+//    protected:
+//      bool SubmitToThread(std::function<void()> &&function) override;
     };
   }
 }

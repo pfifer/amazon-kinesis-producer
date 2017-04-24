@@ -39,6 +39,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.xml.bind.DatatypeConverter;
 
+import com.google.common.collect.Iterators;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -451,6 +455,20 @@ public class Daemon {
             process = pb.start();
         } catch (Exception e) {
             fatalError("Error starting child process", e, false);
+        }
+        try {
+            int exitValue = process.exitValue();
+            String stdErrorMessage = StringUtils.join(IOUtils.readLines(process.getErrorStream(), Charsets.UTF_8), "\n");
+            String stdOutMessages =  StringUtils.join(IOUtils.readLines(process.getInputStream(), Charsets.UTF_8), "\n");
+
+            log.error("Process exited unexpectedly with {}", exitValue);
+            log.error("StdError: {}", stdErrorMessage);
+            log.error("stdOut: {}", stdOutMessages);
+
+        } catch (IllegalThreadStateException ex) {
+            //
+            // Process hasn't exited yet
+            //
         }
         stdOutReader = new LogInputStreamReader(process.getInputStream(), "StdOut", new LogInputStreamReader.DefaultLoggingFunction() {
             @Override
