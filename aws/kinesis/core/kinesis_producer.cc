@@ -93,7 +93,7 @@ make_sdk_client_cfg(const aws::kinesis::core::Configuration& kpl_cfg,
   cfg.retryStrategy = std::make_shared<Aws::Client::DefaultRetryStrategy>(0, 0);
   cfg.verifySSL = kpl_cfg.verify_certificate();
   cfg.caPath = ca_path;
-  cfg.executor = std::make_shared<aws::utils::reporting_thread_executor>();
+  cfg.executor = std::make_shared<aws::utils::reporting_thread_executor>(90);
   return cfg;
 }
 

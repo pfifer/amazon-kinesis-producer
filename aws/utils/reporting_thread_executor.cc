@@ -17,7 +17,7 @@
 using namespace aws::utils;
 using namespace Aws::Utils::Threading;
 
-reporting_thread_executor::reporting_thread_executor() : PooledThreadExecutor(8) {}
+reporting_thread_executor::reporting_thread_executor(std::size_t thread_count) : PooledThreadExecutor(thread_count) {}
 
 //bool reporting_thread_executor::SubmitToThread(std::function<void()> &&function) {
 //  std::thread t = make_reporting_thread(std::move(function));

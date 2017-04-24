@@ -22,7 +22,7 @@ namespace aws {
     class reporting_thread_executor : public Aws::Utils::Threading::PooledThreadExecutor {
 
     public:
-      reporting_thread_executor();
+      reporting_thread_executor(std::size_t thread_count);
 
 //    protected:
 //      bool SubmitToThread(std::function<void()> &&function) override;
