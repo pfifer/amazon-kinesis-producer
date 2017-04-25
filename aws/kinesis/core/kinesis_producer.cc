@@ -23,6 +23,7 @@
 #include <aws/core/http/Scheme.h>
 #include <aws/kinesis/core/kinesis_producer.h>
 #include <aws/utils/reporting_thread_executor.h>
+#include <aws/utils/thread_pool_selector.h>
 
 namespace {
 
@@ -93,7 +94,7 @@ make_sdk_client_cfg(const aws::kinesis::core::Configuration& kpl_cfg,
   cfg.retryStrategy = std::make_shared<Aws::Client::DefaultRetryStrategy>(0, 0);
   cfg.verifySSL = kpl_cfg.verify_certificate();
   cfg.caPath = ca_path;
-  cfg.executor = std::make_shared<aws::utils::reporting_thread_executor>(90);
+  cfg.executor = aws::utils::make_executor();
   return cfg;
 }
 

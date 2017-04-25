@@ -23,7 +23,11 @@ set(REPORTING_THREAD_SOURCES
         aws/utils/reporting_thread.h
         aws/utils/reporting_thread_executor.cc
         aws/utils/reporting_thread_executor.h
-        aws/build_info.h)
+        aws/build_info.h
+        aws/utils/simple_executor.cc
+        aws/utils/simple_executor.h
+        aws/utils/thread_pool_selector.cc
+        aws/utils/thread_pool_selector.h)
 
 
 set(SOURCE_FILES
@@ -78,7 +82,7 @@ set(SOURCE_FILES
         aws/utils/token_bucket.h
         aws/utils/utils.cc
         aws/utils/utils.h
-        ${REPORTING_THREAD_SOURCES})
+        ${REPORTING_THREAD_SOURCES} )
 
 
 
@@ -123,7 +127,7 @@ set(LOGGING_TRIGGERS
         aws/utils/backtrace/bsd_backtrace.cc
         aws/utils/backtrace/null_backtrace.cc)
 
-set(BUILD_INFO_SOURCE aws/build_info.h)
+set(BUILD_INFO_SOURCE aws/build_info.h aws/utils/simple_executor.cc aws/utils/simple_executor.h)
 
 set(THIRD_PARTY_LIBS third_party/lib)
 set(THIRD_PARTY_INCLUDE third_party/include)
