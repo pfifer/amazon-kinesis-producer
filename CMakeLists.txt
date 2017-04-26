@@ -77,7 +77,7 @@ set(SOURCE_FILES
         aws/utils/time_sensitive_queue.h
         aws/utils/token_bucket.h
         aws/utils/utils.cc
-        aws/utils/utils.h)
+        aws/utils/utils.h aws/utils/thread_limiter.cc aws/utils/thread_limiter.h)
 
 
 

@@ -38,6 +38,7 @@
 #include <aws/core/Aws.h>
 #include <aws/core/utils/logging/LogLevel.h>
 #include <aws/core/internal/EC2MetadataClient.h>
+#include <aws/utils/thread_limiter.h>
 
 namespace {
 
@@ -354,24 +355,13 @@ std::string get_ca_path() {
 
 int main(int argc, char* const* argv) {
 
-  rlimit rlim = { 0 };
-  if (getrlimit(RLIMIT_NPROC, &rlim)) {
-    std::cerr << "Failed to retrieve NPROC rlimit" << std::endl;
-    return 1;
-  }
-  auto old = rlim.rlim_cur;
-  rlim.rlim_cur = 20;
 
-
-  if (setrlimit(RLIMIT_NPROC, &rlim)) {
-    std::cerr << "Failed to update rlimit: " << old << " to " << rlim.rlim_cur << std::endl;
-    return 1;
-  }
 
   process_options(argc, argv);
   aws::utils::setup_logging(options.boost_log_level);
   aws::utils::setup_aws_logging(options.aws_log_level);
 
+  aws::utils::set_thread_limit();
   Aws::SDKOptions sdk_options;
   Aws::InitAPI(sdk_options);
 
