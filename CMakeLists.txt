@@ -6,7 +6,25 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(ADDL_LINK_CONFIG "-static-libstdc++")
 endif(CMAKE_COMPILER_IS_GNUCXX)
+
 set(CMAKE_EXE_LINKER_FLAGS "-L${THIRD_PARTY_LIB_DIR} ${ADDL_LINK_CONFIG}")
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    add_definitions(-DENABLE_THREAD_NOEXCEPT)
+    message(STATUS "GNU compiler enabling thread exception change.")
+
+    add_compile_options("-fpermissive")
+    message(STATUS "Enable permissive bit shifts for g++")
+endif ()
+
+
+
+IF(CMAKE_BUILD_TYPE MATCHES DEBUG)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+    if (CMAKE_COMPILER_IS_GNUCXX)
+        set(ADDL_LINK_CONFIG "${ADDL_LINK_CONFIG} -static-libasan")
+    endif (CMAKE_COMPILER_IS_GNUCXX)
+ENDIF(CMAKE_BUILD_TYPE MATCHES DEBUG)
 
 set(SOURCE_FILES
         aws/auth/mutable_static_creds_provider.h
