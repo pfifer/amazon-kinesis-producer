@@ -110,7 +110,7 @@ namespace {
         }
         last_update = 0;
       } else {
-        last_update = dynamic_check.st_mtimespec.tv_sec;
+        last_update = dynamic_check.st_mtime;
       }
       return clock::from_time_t(last_update);
     }
