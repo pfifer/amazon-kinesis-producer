@@ -114,6 +114,18 @@ make_sdk_client_cfg(const aws::kinesis::core::Configuration& kpl_cfg,
         thread_pool_size = kDefaultThreadPoolSize;
       }
       LOG(info) << "Using pooled threading model with " << thread_pool_size << " threads.";
+      auto executor = std::make_shared<Aws::Utils::Threading::PooledThreadExecutor>(thread_pool_size);
+      std::thread reporter([executor]() {
+        while(true) {
+          {
+            std::lock_guard<std::mutex> guard(executor->m_queueLock);
+            LOG(info) << "Thread Pool Queue Size: " << executor->m_tasks.size();
+          }
+          using namespace std::chrono_literals;
+          std::this_thread::sleep_for(10s);
+        }
+      });
+      reporter.detach();
       sdk_client_executor = std::make_shared<Aws::Utils::Threading::PooledThreadExecutor>(thread_pool_size);
     }
   } else {
