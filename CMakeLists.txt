@@ -4,7 +4,7 @@ project(amazon_kinesis_producer)
 set(THIRD_PARTY_LIB_DIR "${amazon_kinesis_producer_internal_SOURCE_DIR}/third_party/lib")
 
 if (CMAKE_COMPILER_IS_GNUCXX)
-    set(ADDL_LINK_CONFIG "-static-libstdc++")
+    set(ADDL_LINK_CONFIG "-static-libstdc++ -static-libgcc")
     add_compile_options("-fpermissive")
 endif ()
 
