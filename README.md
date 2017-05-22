@@ -8,6 +8,13 @@ For detailed information and installation instructions, see the article [Develop
 
 ## Release Notes
 
+### 0.12.5
+
+#### C++ Core
+
+* Remove requirement on glibc 2.14
+  * [PR #108](https://github.com/awslabs/amazon-kinesis-producer/pull/108)
+
 ### 0.12.4
 
 #### Java
