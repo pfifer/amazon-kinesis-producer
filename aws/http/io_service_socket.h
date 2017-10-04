@@ -33,26 +33,23 @@ class IoServiceSocket : public Socket {
                   const std::string& endpoint,
                   int port,
                   bool secure,
-                  bool verify_cert)
+                  bool verify_cert,
+                  cosnt std::string& ca_path)
       : io_service_(io_service),
         timer_(*io_service_),
         ssl_ctx_(boost::asio::ssl::context::tlsv1_client),
         endpoint_(endpoint),
         port_(port),
         secure_(secure),
-        verify_cert_(verify_cert) {}
+        verify_cert_(verify_cert),
+        ca_path_(ca_path) {}
 
   void open(const ConnectCallback& cb,
             std::chrono::milliseconds timeout) override {
     connect_cb_ = cb;
 
     if (secure_) {
-      ssl_ctx_.add_certificate_authority(
-          boost::asio::buffer(
-              std::string(aws::auth::VeriSignClass3PublicPrimaryG5)));
-      ssl_ctx_.add_certificate_authority(
-          boost::asio::buffer(
-              std::string(aws::auth::VeriSignClass3PublicPrimary)));
+      ssl_ctx_.add_verify_path(ca_path_);
       ssl_socket_ =
           std::make_shared<boost::asio::ssl::stream<TcpSocket>>(
               *io_service_,
@@ -251,14 +248,16 @@ class IoServiceSocket : public Socket {
   ConnectCallback connect_cb_;
   std::shared_ptr<boost::asio::ip::tcp::resolver> resolver_;
   std::chrono::steady_clock::time_point last_use_;
+  const std::string& ca_path_;
 };
 
 class IoServiceSocketFactory : public SocketFactory {
  public:
-  IoServiceSocketFactory()
+  IoServiceSocketFactory(const std::string& ca_path)
     : io_service_(std::make_shared<boost::asio::io_service>()),
       w_(*io_service_),
-      thread_([this] { io_service_->run(); }) {}
+      thread_([this] { io_service_->run(); }),
+      ca_path_(ca_path) {}
 
   ~IoServiceSocketFactory() {
     w_.~work();
@@ -281,6 +280,7 @@ class IoServiceSocketFactory : public SocketFactory {
   std::shared_ptr<boost::asio::io_service> io_service_;
   boost::asio::io_service::work w_;
   aws::thread thread_;
+  const std::string& ca_path_;
 };
 
 } //namespace http
