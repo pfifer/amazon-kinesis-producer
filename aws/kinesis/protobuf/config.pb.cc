@@ -56,7 +56,7 @@ void protobuf_AssignDesc_config_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AdditionalDimension));
   Configuration_descriptor_ = file->message_type(1);
-  static const int Configuration_offsets_[23] = {
+  static const int Configuration_offsets_[24] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Configuration, additional_metric_dims_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Configuration, aggregation_enabled_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Configuration, aggregation_max_count_),
@@ -80,6 +80,7 @@ void protobuf_AssignDesc_config_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Configuration, region_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Configuration, request_timeout_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Configuration, verify_certificate_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Configuration, ca_path_),
   };
   Configuration_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -132,7 +133,7 @@ void protobuf_AddDesc_config_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\014config.proto\022\024aws.kinesis.protobuf\"F\n\023"
     "AdditionalDimension\022\013\n\003key\030\001 \002(\t\022\r\n\005valu"
-    "e\030\002 \002(\t\022\023\n\013granularity\030\003 \002(\t\"\243\006\n\rConfigu"
+    "e\030\002 \002(\t\022\023\n\013granularity\030\003 \002(\t\"\266\006\n\rConfigu"
     "ration\022J\n\026additional_metric_dims\030\200\001 \003(\0132"
     ").aws.kinesis.protobuf.AdditionalDimensi"
     "on\022!\n\023aggregation_enabled\030\001 \001(\010:\004true\022)\n"
@@ -152,7 +153,9 @@ void protobuf_AddDesc_config_2eproto() {
     ":\003150\022%\n\030record_max_buffered_time\030\022 \001(\004:"
     "\003100\022\031\n\nrecord_ttl\030\023 \001(\004:\00530000\022\020\n\006regio"
     "n\030\024 \001(\t:\000\022\035\n\017request_timeout\030\025 \001(\004:\0046000"
-    "\022 \n\022verify_certificate\030\026 \001(\010:\004true", 914);
+    "\022 \n\022verify_certificate\030\026 \001(\010:\004true\022\021\n\007ca"
+    "_path\030\027 \001(\t:\000B2\n0com.amazonaws.services."
+    "kinesis.producer.protobuf", 985);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "config.proto", &protobuf_RegisterTypes);
   AdditionalDimension::default_instance_ = new AdditionalDimension();
@@ -571,6 +574,7 @@ const int Configuration::kRecordTtlFieldNumber;
 const int Configuration::kRegionFieldNumber;
 const int Configuration::kRequestTimeoutFieldNumber;
 const int Configuration::kVerifyCertificateFieldNumber;
+const int Configuration::kCaPathFieldNumber;
 #endif  // !_MSC_VER
 
 Configuration::Configuration()
@@ -614,6 +618,7 @@ void Configuration::SharedCtor() {
   region_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   request_timeout_ = GOOGLE_ULONGLONG(6000);
   verify_certificate_ = true;
+  ca_path_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -640,6 +645,9 @@ void Configuration::SharedDtor() {
   }
   if (region_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     delete region_;
+  }
+  if (ca_path_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete ca_path_;
   }
   if (this != default_instance_) {
   }
@@ -706,7 +714,7 @@ void Configuration::Clear() {
     metrics_upload_delay_ = GOOGLE_ULONGLONG(60000);
     min_connections_ = GOOGLE_ULONGLONG(1);
   }
-  if (_has_bits_[16 / 32] & 8323072) {
+  if (_has_bits_[16 / 32] & 16711680) {
     port_ = GOOGLE_ULONGLONG(443);
     rate_limit_ = GOOGLE_ULONGLONG(150);
     record_max_buffered_time_ = GOOGLE_ULONGLONG(100);
@@ -718,6 +726,11 @@ void Configuration::Clear() {
     }
     request_timeout_ = GOOGLE_ULONGLONG(6000);
     verify_certificate_ = true;
+    if (has_ca_path()) {
+      if (ca_path_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+        ca_path_->clear();
+      }
+    }
   }
   additional_metric_dims_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1071,6 +1084,23 @@ bool Configuration::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(186)) goto parse_ca_path;
+        break;
+      }
+
+      // optional string ca_path = 23 [default = ""];
+      case 23: {
+        if (tag == 186) {
+         parse_ca_path:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_ca_path()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->ca_path().data(), this->ca_path().length(),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "ca_path");
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectTag(1026)) goto parse_additional_metric_dims;
         break;
       }
@@ -1254,6 +1284,16 @@ void Configuration::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(22, this->verify_certificate(), output);
   }
 
+  // optional string ca_path = 23 [default = ""];
+  if (has_ca_path()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->ca_path().data(), this->ca_path().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "ca_path");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      23, this->ca_path(), output);
+  }
+
   // repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;
   for (int i = 0; i < this->additional_metric_dims_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -1414,6 +1454,17 @@ void Configuration::SerializeWithCachedSizes(
   // optional bool verify_certificate = 22 [default = true];
   if (has_verify_certificate()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(22, this->verify_certificate(), target);
+  }
+
+  // optional string ca_path = 23 [default = ""];
+  if (has_ca_path()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->ca_path().data(), this->ca_path().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "ca_path");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        23, this->ca_path(), target);
   }
 
   // repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;
@@ -1587,6 +1638,13 @@ int Configuration::ByteSize() const {
       total_size += 2 + 1;
     }
 
+    // optional string ca_path = 23 [default = ""];
+    if (has_ca_path()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->ca_path());
+    }
+
   }
   // repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;
   total_size += 2 * this->additional_metric_dims_size();
@@ -1693,6 +1751,9 @@ void Configuration::MergeFrom(const Configuration& from) {
     if (from.has_verify_certificate()) {
       set_verify_certificate(from.verify_certificate());
     }
+    if (from.has_ca_path()) {
+      set_ca_path(from.ca_path());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -1740,6 +1801,7 @@ void Configuration::Swap(Configuration* other) {
     std::swap(region_, other->region_);
     std::swap(request_timeout_, other->request_timeout_);
     std::swap(verify_certificate_, other->verify_certificate_);
+    std::swap(ca_path_, other->ca_path_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

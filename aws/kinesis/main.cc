@@ -13,11 +13,12 @@
 
 #include <boost/predef.h>
 
-#ifndef BOOST_OS_WINDOWS
-  #include <unistd.h>
-  #include <sys/stat.h>
-  #include <sys/types.h>
-#endif
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <limits.h>
+#include <cstring>
+#include <errno.h>
 
 #include <boost/algorithm/hex.hpp>
 #include <boost/algorithm/string.hpp>
@@ -103,6 +104,41 @@ std::string get_region(const aws::kinesis::core::Configuration& config,
   return *ec2_region;
 }
 
+void report_ca_error(const std::string& message, errno_t specific_error = 0) {
+  errno_t report_errno = specific_error;
+  if (!report_errno) {
+    report_errno = errno;
+  }
+  LOG(error) << message << ".  It is possible that SSL connections will fail."
+             << "[errno=" << report_errno << ", message: " << std::strerror(report_errno) << "]";
+}
+  
+std::string get_ca_path(const std::shared_ptr<aws::kinesis::core::Configuration>& config) {
+  std::string ca_path;
+  if (!config->ca_path().empty()) {
+    ca_path = config->ca_path();
+  } else {
+    char cwd_buf[PATH_MAX];
+    char* cwd_result = getcwd(cwd_buf, sizeof(cwd_buf) - 1);
+    if (cwd_result == nullptr) {
+      report_ca_error("Failed to get the current working directory to load the CA path");
+      return "";
+    }
+    std::string cwd = cwd_result;
+    ca_path = cwd + "/ca";
+  }
+
+  struct stat stat_buf;
+  if (stat(ca_path.c_str(), &stat_buf)) {
+    report_ca_error("Failed to stat " + ca_path);
+    return ca_path;
+  }
+  if (!S_ISDIR(stat_buf.st_mode)) {
+    report_ca_error("'" + ca_path + "' isn't a directory.", EINVAL);
+  }
+  return ca_path;
+}
+
 std::pair<
     std::shared_ptr<aws::auth::AwsCredentialsProvider>,
     std::shared_ptr<aws::auth::AwsCredentialsProvider>>
@@ -170,8 +206,8 @@ std::shared_ptr<aws::utils::Executor> get_executor() {
   return std::make_shared<aws::utils::IoServiceExecutor>(workers);
 }
 
-std::shared_ptr<aws::http::SocketFactory> get_socket_factory() {
-  return std::make_shared<aws::http::IoServiceSocketFactory>();;
+std::shared_ptr<aws::http::SocketFactory> get_socket_factory(const std::string& ca_path) {
+  return std::make_shared<aws::http::IoServiceSocketFactory>(ca_path);
 }
 
 std::shared_ptr<aws::kinesis::core::IpcManager>
@@ -205,7 +241,7 @@ int main(int argc, const char* argv[]) {
     aws::utils::set_log_level(config->log_level());
 
     auto executor = get_executor();
-    auto socket_factory = get_socket_factory();
+    auto socket_factory = get_socket_factory(get_ca_path(config));
     auto ec2_md =
       std::make_shared<aws::http::Ec2Metadata>(executor, socket_factory);
     auto region = get_region(*config, ec2_md);

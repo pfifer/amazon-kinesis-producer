@@ -1,6 +1,8 @@
-import "config.proto";
-
+syntax = "proto2";
 package aws.kinesis.protobuf;
+
+option java_package = "com.amazonaws.services.kinesis.producer.protobuf";
+import "config.proto";
 
 message Tag {
   required string key   = 1;

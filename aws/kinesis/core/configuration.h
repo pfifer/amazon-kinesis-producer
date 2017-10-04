@@ -354,6 +354,14 @@ class Configuration : private boost::noncopyable {
     return verify_certificate_;
   }
 
+  // The CA path used to verify TLS certificates.  If this is empty
+  // certificates are expected to be found in <cwd>/ca
+  //
+  // Default: ""
+  const std::string& ca_path() const noexcept {
+      return ca_path_;
+  }
+
   // Enable aggregation. With aggregation, multiple user records are packed
   // into a single KinesisRecord. If disabled, each user record is sent in its
   // own KinesisRecord.
@@ -834,6 +842,14 @@ class Configuration : private boost::noncopyable {
     return *this;
   }
 
+  // The CA path use to for verification of TLS certificates.
+  //
+  // Default: ""
+  Configuration& ca_path(const std::string& ca_path) {
+      ca_path_ = ca_path;
+      return *this;
+  }
+
 
   const std::vector<std::tuple<std::string, std::string, std::string>>&
   additional_metrics_dims() {
@@ -875,6 +891,7 @@ class Configuration : private boost::noncopyable {
     region(c.region());
     request_timeout(c.request_timeout());
     verify_certificate(c.verify_certificate());
+    ca_path(c.ca_path());
 
     for (auto i = 0; i < c.additional_metric_dims_size(); i++) {
       auto ad = c.additional_metric_dims(i);
@@ -907,6 +924,7 @@ class Configuration : private boost::noncopyable {
   std::string region_ = "";
   uint64_t request_timeout_ = 6000;
   bool verify_certificate_ = true;
+  std::string ca_path_ = "";
 
   std::vector<std::tuple<std::string, std::string, std::string>>
       additional_metrics_dims_;

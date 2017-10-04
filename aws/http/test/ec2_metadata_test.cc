@@ -24,7 +24,7 @@ namespace {
 const int kPort = aws::kinesis::test::TestTLSServer::kDefaultPort;
 
 auto make_ec2_md() {
-  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>();
+  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>("");
   auto executor = std::make_shared<aws::utils::IoServiceExecutor>(1);
   return std::make_shared<aws::http::Ec2Metadata>(executor,
                                                   socket_factory,

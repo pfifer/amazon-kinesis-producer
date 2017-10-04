@@ -27,7 +27,7 @@ namespace {
 const int kPort = aws::kinesis::test::TestTLSServer::kDefaultPort;
 
 auto make_socket_factory() {
-  return std::make_shared<aws::http::IoServiceSocketFactory>();
+  return std::make_shared<aws::http::IoServiceSocketFactory>("");
 }
 
 auto make_executor() {

@@ -35,7 +35,7 @@ const std::string kDefaultToken = "abcd";
 std::shared_ptr<aws::auth::InstanceProfileAwsCredentialsProvider>
 make_provider() {
   auto executor = std::make_shared<aws::utils::IoServiceExecutor>(1);
-  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>();
+  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>("");
   auto ec2_metadata =
       std::make_shared<aws::http::Ec2Metadata>(
           executor,

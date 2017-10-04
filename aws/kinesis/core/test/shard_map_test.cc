@@ -27,7 +27,7 @@ const std::string kStreamName = "myStream";
 class Wrapper {
  public:
   Wrapper(int delay = 1500)
-      : socket_factory_(std::make_shared<aws::http::IoServiceSocketFactory>()),
+      : socket_factory_(std::make_shared<aws::http::IoServiceSocketFactory>("")),
         executor_(std::make_shared<aws::utils::IoServiceExecutor>(1)),
         http_client_(
             std::make_shared<aws::http::HttpClient>(

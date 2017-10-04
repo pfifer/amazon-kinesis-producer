@@ -403,6 +403,18 @@ class Configuration : public ::google::protobuf::Message {
   inline bool verify_certificate() const;
   inline void set_verify_certificate(bool value);
 
+  // optional string ca_path = 23 [default = ""];
+  inline bool has_ca_path() const;
+  inline void clear_ca_path();
+  static const int kCaPathFieldNumber = 23;
+  inline const ::std::string& ca_path() const;
+  inline void set_ca_path(const ::std::string& value);
+  inline void set_ca_path(const char* value);
+  inline void set_ca_path(const char* value, size_t size);
+  inline ::std::string* mutable_ca_path();
+  inline ::std::string* release_ca_path();
+  inline void set_allocated_ca_path(::std::string* ca_path);
+
   // @@protoc_insertion_point(class_scope:aws.kinesis.protobuf.Configuration)
  private:
   inline void set_has_aggregation_enabled();
@@ -449,6 +461,8 @@ class Configuration : public ::google::protobuf::Message {
   inline void clear_has_request_timeout();
   inline void set_has_verify_certificate();
   inline void clear_has_verify_certificate();
+  inline void set_has_ca_path();
+  inline void clear_has_ca_path();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -478,6 +492,7 @@ class Configuration : public ::google::protobuf::Message {
   ::google::protobuf::uint64 record_ttl_;
   ::std::string* region_;
   ::google::protobuf::uint64 request_timeout_;
+  ::std::string* ca_path_;
   bool aggregation_enabled_;
   bool fail_if_throttled_;
   bool verify_certificate_;
@@ -1595,6 +1610,82 @@ inline void Configuration::set_verify_certificate(bool value) {
   set_has_verify_certificate();
   verify_certificate_ = value;
   // @@protoc_insertion_point(field_set:aws.kinesis.protobuf.Configuration.verify_certificate)
+}
+
+// optional string ca_path = 23 [default = ""];
+inline bool Configuration::has_ca_path() const {
+  return (_has_bits_[0] & 0x00800000u) != 0;
+}
+inline void Configuration::set_has_ca_path() {
+  _has_bits_[0] |= 0x00800000u;
+}
+inline void Configuration::clear_has_ca_path() {
+  _has_bits_[0] &= ~0x00800000u;
+}
+inline void Configuration::clear_ca_path() {
+  if (ca_path_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    ca_path_->clear();
+  }
+  clear_has_ca_path();
+}
+inline const ::std::string& Configuration::ca_path() const {
+  // @@protoc_insertion_point(field_get:aws.kinesis.protobuf.Configuration.ca_path)
+  return *ca_path_;
+}
+inline void Configuration::set_ca_path(const ::std::string& value) {
+  set_has_ca_path();
+  if (ca_path_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    ca_path_ = new ::std::string;
+  }
+  ca_path_->assign(value);
+  // @@protoc_insertion_point(field_set:aws.kinesis.protobuf.Configuration.ca_path)
+}
+inline void Configuration::set_ca_path(const char* value) {
+  set_has_ca_path();
+  if (ca_path_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    ca_path_ = new ::std::string;
+  }
+  ca_path_->assign(value);
+  // @@protoc_insertion_point(field_set_char:aws.kinesis.protobuf.Configuration.ca_path)
+}
+inline void Configuration::set_ca_path(const char* value, size_t size) {
+  set_has_ca_path();
+  if (ca_path_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    ca_path_ = new ::std::string;
+  }
+  ca_path_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:aws.kinesis.protobuf.Configuration.ca_path)
+}
+inline ::std::string* Configuration::mutable_ca_path() {
+  set_has_ca_path();
+  if (ca_path_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    ca_path_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:aws.kinesis.protobuf.Configuration.ca_path)
+  return ca_path_;
+}
+inline ::std::string* Configuration::release_ca_path() {
+  clear_has_ca_path();
+  if (ca_path_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = ca_path_;
+    ca_path_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void Configuration::set_allocated_ca_path(::std::string* ca_path) {
+  if (ca_path_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete ca_path_;
+  }
+  if (ca_path) {
+    set_has_ca_path();
+    ca_path_ = ca_path;
+  } else {
+    clear_has_ca_path();
+    ca_path_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:aws.kinesis.protobuf.Configuration.ca_path)
 }
 
 

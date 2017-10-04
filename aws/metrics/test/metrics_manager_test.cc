@@ -33,7 +33,7 @@ using ExtraDimensions = aws::metrics::detail::ExtraDimensions;
 
 auto make_metrics_manager(ExtraDimensions dims = ExtraDimensions()) {
   auto executor = std::make_shared<aws::utils::IoServiceExecutor>(1);
-  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>();
+  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>("");
   auto creds =
       std::make_shared<aws::auth::BasicAwsCredentialsProvider>(
           "AKIAAAAAAAAAAAAAAAAA",

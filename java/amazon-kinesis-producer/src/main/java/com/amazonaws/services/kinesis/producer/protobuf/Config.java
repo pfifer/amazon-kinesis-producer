@@ -9,7 +9,7 @@ public final class Config {
       com.google.protobuf.ExtensionRegistry registry) {
   }
   public interface AdditionalDimensionOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension)
+      // @@protoc_insertion_point(interface_extends:aws.kinesis.protobuf.AdditionalDimension)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -55,11 +55,11 @@ public final class Config {
         getGranularityBytes();
   }
   /**
-   * Protobuf type {@code com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension}
+   * Protobuf type {@code aws.kinesis.protobuf.AdditionalDimension}
    */
   public static final class AdditionalDimension extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension)
+      // @@protoc_insertion_point(message_implements:aws.kinesis.protobuf.AdditionalDimension)
       AdditionalDimensionOrBuilder {
     // Use AdditionalDimension.newBuilder() to construct.
     private AdditionalDimension(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -138,12 +138,12 @@ public final class Config {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_com_amazonaws_services_kinesis_producer_protobuf_AdditionalDimension_descriptor;
+      return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_aws_kinesis_protobuf_AdditionalDimension_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_com_amazonaws_services_kinesis_producer_protobuf_AdditionalDimension_fieldAccessorTable
+      return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_aws_kinesis_protobuf_AdditionalDimension_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.class, com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.Builder.class);
     }
@@ -429,20 +429,20 @@ public final class Config {
       return builder;
     }
     /**
-     * Protobuf type {@code com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension}
+     * Protobuf type {@code aws.kinesis.protobuf.AdditionalDimension}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension)
+        // @@protoc_insertion_point(builder_implements:aws.kinesis.protobuf.AdditionalDimension)
         com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimensionOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_com_amazonaws_services_kinesis_producer_protobuf_AdditionalDimension_descriptor;
+        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_aws_kinesis_protobuf_AdditionalDimension_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_com_amazonaws_services_kinesis_producer_protobuf_AdditionalDimension_fieldAccessorTable
+        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_aws_kinesis_protobuf_AdditionalDimension_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.class, com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.Builder.class);
       }
@@ -482,7 +482,7 @@ public final class Config {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_com_amazonaws_services_kinesis_producer_protobuf_AdditionalDimension_descriptor;
+        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_aws_kinesis_protobuf_AdditionalDimension_descriptor;
       }
 
       public com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension getDefaultInstanceForType() {
@@ -811,7 +811,7 @@ public final class Config {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension)
+      // @@protoc_insertion_point(builder_scope:aws.kinesis.protobuf.AdditionalDimension)
     }
 
     static {
@@ -819,33 +819,33 @@ public final class Config {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension)
+    // @@protoc_insertion_point(class_scope:aws.kinesis.protobuf.AdditionalDimension)
   }
 
   public interface ConfigurationOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.amazonaws.services.kinesis.producer.protobuf.Configuration)
+      // @@protoc_insertion_point(interface_extends:aws.kinesis.protobuf.Configuration)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+     * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
      */
     java.util.List<com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension> 
         getAdditionalMetricDimsList();
     /**
-     * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+     * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
      */
     com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension getAdditionalMetricDims(int index);
     /**
-     * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+     * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
      */
     int getAdditionalMetricDimsCount();
     /**
-     * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+     * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
      */
     java.util.List<? extends com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimensionOrBuilder> 
         getAdditionalMetricDimsOrBuilderList();
     /**
-     * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+     * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
      */
     com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimensionOrBuilder getAdditionalMetricDimsOrBuilder(
         int index);
@@ -1077,13 +1077,27 @@ public final class Config {
      * <code>optional bool verify_certificate = 22 [default = true];</code>
      */
     boolean getVerifyCertificate();
+
+    /**
+     * <code>optional string ca_path = 23 [default = ""];</code>
+     */
+    boolean hasCaPath();
+    /**
+     * <code>optional string ca_path = 23 [default = ""];</code>
+     */
+    java.lang.String getCaPath();
+    /**
+     * <code>optional string ca_path = 23 [default = ""];</code>
+     */
+    com.google.protobuf.ByteString
+        getCaPathBytes();
   }
   /**
-   * Protobuf type {@code com.amazonaws.services.kinesis.producer.protobuf.Configuration}
+   * Protobuf type {@code aws.kinesis.protobuf.Configuration}
    */
   public static final class Configuration extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.amazonaws.services.kinesis.producer.protobuf.Configuration)
+      // @@protoc_insertion_point(message_implements:aws.kinesis.protobuf.Configuration)
       ConfigurationOrBuilder {
     // Use Configuration.newBuilder() to construct.
     private Configuration(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -1246,6 +1260,12 @@ public final class Config {
               verifyCertificate_ = input.readBool();
               break;
             }
+            case 186: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00400000;
+              caPath_ = bs;
+              break;
+            }
             case 1026: {
               if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
                 additionalMetricDims_ = new java.util.ArrayList<com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension>();
@@ -1271,12 +1291,12 @@ public final class Config {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_com_amazonaws_services_kinesis_producer_protobuf_Configuration_descriptor;
+      return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_aws_kinesis_protobuf_Configuration_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_com_amazonaws_services_kinesis_producer_protobuf_Configuration_fieldAccessorTable
+      return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_aws_kinesis_protobuf_Configuration_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.amazonaws.services.kinesis.producer.protobuf.Config.Configuration.class, com.amazonaws.services.kinesis.producer.protobuf.Config.Configuration.Builder.class);
     }
@@ -1300,32 +1320,32 @@ public final class Config {
     public static final int ADDITIONAL_METRIC_DIMS_FIELD_NUMBER = 128;
     private java.util.List<com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension> additionalMetricDims_;
     /**
-     * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+     * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
      */
     public java.util.List<com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension> getAdditionalMetricDimsList() {
       return additionalMetricDims_;
     }
     /**
-     * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+     * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
      */
     public java.util.List<? extends com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimensionOrBuilder> 
         getAdditionalMetricDimsOrBuilderList() {
       return additionalMetricDims_;
     }
     /**
-     * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+     * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
      */
     public int getAdditionalMetricDimsCount() {
       return additionalMetricDims_.size();
     }
     /**
-     * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+     * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
      */
     public com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension getAdditionalMetricDims(int index) {
       return additionalMetricDims_.get(index);
     }
     /**
-     * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+     * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
      */
     public com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimensionOrBuilder getAdditionalMetricDimsOrBuilder(
         int index) {
@@ -1824,6 +1844,48 @@ public final class Config {
       return verifyCertificate_;
     }
 
+    public static final int CA_PATH_FIELD_NUMBER = 23;
+    private java.lang.Object caPath_;
+    /**
+     * <code>optional string ca_path = 23 [default = ""];</code>
+     */
+    public boolean hasCaPath() {
+      return ((bitField0_ & 0x00400000) == 0x00400000);
+    }
+    /**
+     * <code>optional string ca_path = 23 [default = ""];</code>
+     */
+    public java.lang.String getCaPath() {
+      java.lang.Object ref = caPath_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          caPath_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string ca_path = 23 [default = ""];</code>
+     */
+    public com.google.protobuf.ByteString
+        getCaPathBytes() {
+      java.lang.Object ref = caPath_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        caPath_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       additionalMetricDims_ = java.util.Collections.emptyList();
       aggregationEnabled_ = true;
@@ -1848,6 +1910,7 @@ public final class Config {
       region_ = "";
       requestTimeout_ = 6000L;
       verifyCertificate_ = true;
+      caPath_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1933,6 +1996,9 @@ public final class Config {
       }
       if (((bitField0_ & 0x00200000) == 0x00200000)) {
         output.writeBool(22, verifyCertificate_);
+      }
+      if (((bitField0_ & 0x00400000) == 0x00400000)) {
+        output.writeBytes(23, getCaPathBytes());
       }
       for (int i = 0; i < additionalMetricDims_.size(); i++) {
         output.writeMessage(128, additionalMetricDims_.get(i));
@@ -2034,6 +2100,10 @@ public final class Config {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(22, verifyCertificate_);
       }
+      if (((bitField0_ & 0x00400000) == 0x00400000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(23, getCaPathBytes());
+      }
       for (int i = 0; i < additionalMetricDims_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(128, additionalMetricDims_.get(i));
@@ -2117,20 +2187,20 @@ public final class Config {
       return builder;
     }
     /**
-     * Protobuf type {@code com.amazonaws.services.kinesis.producer.protobuf.Configuration}
+     * Protobuf type {@code aws.kinesis.protobuf.Configuration}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.amazonaws.services.kinesis.producer.protobuf.Configuration)
+        // @@protoc_insertion_point(builder_implements:aws.kinesis.protobuf.Configuration)
         com.amazonaws.services.kinesis.producer.protobuf.Config.ConfigurationOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_com_amazonaws_services_kinesis_producer_protobuf_Configuration_descriptor;
+        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_aws_kinesis_protobuf_Configuration_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_com_amazonaws_services_kinesis_producer_protobuf_Configuration_fieldAccessorTable
+        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_aws_kinesis_protobuf_Configuration_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.amazonaws.services.kinesis.producer.protobuf.Config.Configuration.class, com.amazonaws.services.kinesis.producer.protobuf.Config.Configuration.Builder.class);
       }
@@ -2206,6 +2276,8 @@ public final class Config {
         bitField0_ = (bitField0_ & ~0x00200000);
         verifyCertificate_ = true;
         bitField0_ = (bitField0_ & ~0x00400000);
+        caPath_ = "";
+        bitField0_ = (bitField0_ & ~0x00800000);
         return this;
       }
 
@@ -2215,7 +2287,7 @@ public final class Config {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_com_amazonaws_services_kinesis_producer_protobuf_Configuration_descriptor;
+        return com.amazonaws.services.kinesis.producer.protobuf.Config.internal_static_aws_kinesis_protobuf_Configuration_descriptor;
       }
 
       public com.amazonaws.services.kinesis.producer.protobuf.Config.Configuration getDefaultInstanceForType() {
@@ -2331,6 +2403,10 @@ public final class Config {
           to_bitField0_ |= 0x00200000;
         }
         result.verifyCertificate_ = verifyCertificate_;
+        if (((from_bitField0_ & 0x00800000) == 0x00800000)) {
+          to_bitField0_ |= 0x00400000;
+        }
+        result.caPath_ = caPath_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2451,6 +2527,11 @@ public final class Config {
         if (other.hasVerifyCertificate()) {
           setVerifyCertificate(other.getVerifyCertificate());
         }
+        if (other.hasCaPath()) {
+          bitField0_ |= 0x00800000;
+          caPath_ = other.caPath_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -2497,7 +2578,7 @@ public final class Config {
           com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension, com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.Builder, com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimensionOrBuilder> additionalMetricDimsBuilder_;
 
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public java.util.List<com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension> getAdditionalMetricDimsList() {
         if (additionalMetricDimsBuilder_ == null) {
@@ -2507,7 +2588,7 @@ public final class Config {
         }
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public int getAdditionalMetricDimsCount() {
         if (additionalMetricDimsBuilder_ == null) {
@@ -2517,7 +2598,7 @@ public final class Config {
         }
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension getAdditionalMetricDims(int index) {
         if (additionalMetricDimsBuilder_ == null) {
@@ -2527,7 +2608,7 @@ public final class Config {
         }
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public Builder setAdditionalMetricDims(
           int index, com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension value) {
@@ -2544,7 +2625,7 @@ public final class Config {
         return this;
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public Builder setAdditionalMetricDims(
           int index, com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.Builder builderForValue) {
@@ -2558,7 +2639,7 @@ public final class Config {
         return this;
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public Builder addAdditionalMetricDims(com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension value) {
         if (additionalMetricDimsBuilder_ == null) {
@@ -2574,7 +2655,7 @@ public final class Config {
         return this;
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public Builder addAdditionalMetricDims(
           int index, com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension value) {
@@ -2591,7 +2672,7 @@ public final class Config {
         return this;
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public Builder addAdditionalMetricDims(
           com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.Builder builderForValue) {
@@ -2605,7 +2686,7 @@ public final class Config {
         return this;
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public Builder addAdditionalMetricDims(
           int index, com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.Builder builderForValue) {
@@ -2619,7 +2700,7 @@ public final class Config {
         return this;
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public Builder addAllAdditionalMetricDims(
           java.lang.Iterable<? extends com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension> values) {
@@ -2634,7 +2715,7 @@ public final class Config {
         return this;
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public Builder clearAdditionalMetricDims() {
         if (additionalMetricDimsBuilder_ == null) {
@@ -2647,7 +2728,7 @@ public final class Config {
         return this;
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public Builder removeAdditionalMetricDims(int index) {
         if (additionalMetricDimsBuilder_ == null) {
@@ -2660,14 +2741,14 @@ public final class Config {
         return this;
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.Builder getAdditionalMetricDimsBuilder(
           int index) {
         return getAdditionalMetricDimsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimensionOrBuilder getAdditionalMetricDimsOrBuilder(
           int index) {
@@ -2677,7 +2758,7 @@ public final class Config {
         }
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public java.util.List<? extends com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimensionOrBuilder> 
            getAdditionalMetricDimsOrBuilderList() {
@@ -2688,14 +2769,14 @@ public final class Config {
         }
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.Builder addAdditionalMetricDimsBuilder() {
         return getAdditionalMetricDimsFieldBuilder().addBuilder(
             com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.Builder addAdditionalMetricDimsBuilder(
           int index) {
@@ -2703,7 +2784,7 @@ public final class Config {
             index, com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.getDefaultInstance());
       }
       /**
-       * <code>repeated .com.amazonaws.services.kinesis.producer.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
+       * <code>repeated .aws.kinesis.protobuf.AdditionalDimension additional_metric_dims = 128;</code>
        */
       public java.util.List<com.amazonaws.services.kinesis.producer.protobuf.Config.AdditionalDimension.Builder> 
            getAdditionalMetricDimsBuilderList() {
@@ -3692,7 +3773,83 @@ public final class Config {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.amazonaws.services.kinesis.producer.protobuf.Configuration)
+      private java.lang.Object caPath_ = "";
+      /**
+       * <code>optional string ca_path = 23 [default = ""];</code>
+       */
+      public boolean hasCaPath() {
+        return ((bitField0_ & 0x00800000) == 0x00800000);
+      }
+      /**
+       * <code>optional string ca_path = 23 [default = ""];</code>
+       */
+      public java.lang.String getCaPath() {
+        java.lang.Object ref = caPath_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            caPath_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string ca_path = 23 [default = ""];</code>
+       */
+      public com.google.protobuf.ByteString
+          getCaPathBytes() {
+        java.lang.Object ref = caPath_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          caPath_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string ca_path = 23 [default = ""];</code>
+       */
+      public Builder setCaPath(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00800000;
+        caPath_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string ca_path = 23 [default = ""];</code>
+       */
+      public Builder clearCaPath() {
+        bitField0_ = (bitField0_ & ~0x00800000);
+        caPath_ = getDefaultInstance().getCaPath();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string ca_path = 23 [default = ""];</code>
+       */
+      public Builder setCaPathBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00800000;
+        caPath_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:aws.kinesis.protobuf.Configuration)
     }
 
     static {
@@ -3700,19 +3857,19 @@ public final class Config {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.amazonaws.services.kinesis.producer.protobuf.Configuration)
+    // @@protoc_insertion_point(class_scope:aws.kinesis.protobuf.Configuration)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_amazonaws_services_kinesis_producer_protobuf_AdditionalDimension_descriptor;
+    internal_static_aws_kinesis_protobuf_AdditionalDimension_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_amazonaws_services_kinesis_producer_protobuf_AdditionalDimension_fieldAccessorTable;
+      internal_static_aws_kinesis_protobuf_AdditionalDimension_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_amazonaws_services_kinesis_producer_protobuf_Configuration_descriptor;
+    internal_static_aws_kinesis_protobuf_Configuration_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_amazonaws_services_kinesis_producer_protobuf_Configuration_fieldAccessorTable;
+      internal_static_aws_kinesis_protobuf_Configuration_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3722,31 +3879,31 @@ public final class Config {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014config.proto\0220com.amazonaws.services.k" +
-      "inesis.producer.protobuf\"F\n\023AdditionalDi" +
-      "mension\022\013\n\003key\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\022\023\n\013g" +
-      "ranularity\030\003 \002(\t\"\277\006\n\rConfiguration\022f\n\026ad" +
-      "ditional_metric_dims\030\200\001 \003(\0132E.com.amazon" +
-      "aws.services.kinesis.producer.protobuf.A" +
-      "dditionalDimension\022!\n\023aggregation_enable" +
-      "d\030\001 \001(\010:\004true\022)\n\025aggregation_max_count\030\002" +
-      " \001(\004:\n4294967295\022#\n\024aggregation_max_size" +
-      "\030\003 \001(\004:\00551200\022!\n\024collection_max_count\030\004 ",
-      "\001(\004:\003500\022$\n\023collection_max_size\030\005 \001(\004:\0075" +
-      "242880\022\035\n\017connect_timeout\030\006 \001(\004:\0046000\022\031\n" +
-      "\017custom_endpoint\030\007 \001(\t:\000\022 \n\021fail_if_thro" +
-      "ttled\030\010 \001(\010:\005false\022\027\n\tlog_level\030\t \001(\t:\004i" +
-      "nfo\022\033\n\017max_connections\030\n \001(\004:\00224\022\"\n\023metr" +
-      "ics_granularity\030\013 \001(\t:\005shard\022\037\n\rmetrics_" +
-      "level\030\014 \001(\t:\010detailed\0221\n\021metrics_namespa" +
-      "ce\030\r \001(\t:\026KinesisProducerLibrary\022#\n\024metr" +
-      "ics_upload_delay\030\016 \001(\004:\00560000\022\032\n\017min_con" +
-      "nections\030\017 \001(\004:\0011\022\021\n\004port\030\020 \001(\004:\003443\022\027\n\n",
-      "rate_limit\030\021 \001(\004:\003150\022%\n\030record_max_buff" +
-      "ered_time\030\022 \001(\004:\003100\022\031\n\nrecord_ttl\030\023 \001(\004" +
-      ":\00530000\022\020\n\006region\030\024 \001(\t:\000\022\035\n\017request_tim" +
-      "eout\030\025 \001(\004:\0046000\022 \n\022verify_certificate\030\026" +
-      " \001(\010:\004true"
+      "\n\014config.proto\022\024aws.kinesis.protobuf\"F\n\023" +
+      "AdditionalDimension\022\013\n\003key\030\001 \002(\t\022\r\n\005valu" +
+      "e\030\002 \002(\t\022\023\n\013granularity\030\003 \002(\t\"\266\006\n\rConfigu" +
+      "ration\022J\n\026additional_metric_dims\030\200\001 \003(\0132" +
+      ").aws.kinesis.protobuf.AdditionalDimensi" +
+      "on\022!\n\023aggregation_enabled\030\001 \001(\010:\004true\022)\n" +
+      "\025aggregation_max_count\030\002 \001(\004:\n4294967295" +
+      "\022#\n\024aggregation_max_size\030\003 \001(\004:\00551200\022!\n" +
+      "\024collection_max_count\030\004 \001(\004:\003500\022$\n\023coll" +
+      "ection_max_size\030\005 \001(\004:\0075242880\022\035\n\017connec",
+      "t_timeout\030\006 \001(\004:\0046000\022\031\n\017custom_endpoint" +
+      "\030\007 \001(\t:\000\022 \n\021fail_if_throttled\030\010 \001(\010:\005fal" +
+      "se\022\027\n\tlog_level\030\t \001(\t:\004info\022\033\n\017max_conne" +
+      "ctions\030\n \001(\004:\00224\022\"\n\023metrics_granularity\030" +
+      "\013 \001(\t:\005shard\022\037\n\rmetrics_level\030\014 \001(\t:\010det" +
+      "ailed\0221\n\021metrics_namespace\030\r \001(\t:\026Kinesi" +
+      "sProducerLibrary\022#\n\024metrics_upload_delay" +
+      "\030\016 \001(\004:\00560000\022\032\n\017min_connections\030\017 \001(\004:\001" +
+      "1\022\021\n\004port\030\020 \001(\004:\003443\022\027\n\nrate_limit\030\021 \001(\004" +
+      ":\003150\022%\n\030record_max_buffered_time\030\022 \001(\004:",
+      "\003100\022\031\n\nrecord_ttl\030\023 \001(\004:\00530000\022\020\n\006regio" +
+      "n\030\024 \001(\t:\000\022\035\n\017request_timeout\030\025 \001(\004:\0046000" +
+      "\022 \n\022verify_certificate\030\026 \001(\010:\004true\022\021\n\007ca" +
+      "_path\030\027 \001(\t:\000B2\n0com.amazonaws.services." +
+      "kinesis.producer.protobuf"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3760,18 +3917,18 @@ public final class Config {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_com_amazonaws_services_kinesis_producer_protobuf_AdditionalDimension_descriptor =
+    internal_static_aws_kinesis_protobuf_AdditionalDimension_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_com_amazonaws_services_kinesis_producer_protobuf_AdditionalDimension_fieldAccessorTable = new
+    internal_static_aws_kinesis_protobuf_AdditionalDimension_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_amazonaws_services_kinesis_producer_protobuf_AdditionalDimension_descriptor,
+        internal_static_aws_kinesis_protobuf_AdditionalDimension_descriptor,
         new java.lang.String[] { "Key", "Value", "Granularity", });
-    internal_static_com_amazonaws_services_kinesis_producer_protobuf_Configuration_descriptor =
+    internal_static_aws_kinesis_protobuf_Configuration_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_com_amazonaws_services_kinesis_producer_protobuf_Configuration_fieldAccessorTable = new
+    internal_static_aws_kinesis_protobuf_Configuration_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_amazonaws_services_kinesis_producer_protobuf_Configuration_descriptor,
-        new java.lang.String[] { "AdditionalMetricDims", "AggregationEnabled", "AggregationMaxCount", "AggregationMaxSize", "CollectionMaxCount", "CollectionMaxSize", "ConnectTimeout", "CustomEndpoint", "FailIfThrottled", "LogLevel", "MaxConnections", "MetricsGranularity", "MetricsLevel", "MetricsNamespace", "MetricsUploadDelay", "MinConnections", "Port", "RateLimit", "RecordMaxBufferedTime", "RecordTtl", "Region", "RequestTimeout", "VerifyCertificate", });
+        internal_static_aws_kinesis_protobuf_Configuration_descriptor,
+        new java.lang.String[] { "AdditionalMetricDims", "AggregationEnabled", "AggregationMaxCount", "AggregationMaxSize", "CollectionMaxCount", "CollectionMaxSize", "ConnectTimeout", "CustomEndpoint", "FailIfThrottled", "LogLevel", "MaxConnections", "MetricsGranularity", "MetricsLevel", "MetricsNamespace", "MetricsUploadDelay", "MinConnections", "Port", "RateLimit", "RecordMaxBufferedTime", "RecordTtl", "Region", "RequestTimeout", "VerifyCertificate", "CaPath", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

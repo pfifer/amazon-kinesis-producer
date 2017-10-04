@@ -92,7 +92,7 @@ auto make_aggregator(
     std::shared_ptr<aws::kinesis::core::Configuration> config =
         std::shared_ptr<aws::kinesis::core::Configuration>()) {
   auto executor = std::make_shared<aws::utils::IoServiceExecutor>(4);
-  auto factory = std::make_shared<aws::http::IoServiceSocketFactory>();
+  auto factory = std::make_shared<aws::http::IoServiceSocketFactory>("");
 
   auto http_client =
       std::make_shared<aws::http::HttpClient>(

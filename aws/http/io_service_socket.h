@@ -34,7 +34,7 @@ class IoServiceSocket : public Socket {
                   int port,
                   bool secure,
                   bool verify_cert,
-                  cosnt std::string& ca_path)
+                  const std::string& ca_path)
       : io_service_(io_service),
         timer_(*io_service_),
         ssl_ctx_(boost::asio::ssl::context::tlsv1_client),
@@ -273,7 +273,8 @@ class IoServiceSocketFactory : public SocketFactory {
                                              endpoint,
                                              port,
                                              secure,
-                                             verify_cert);
+                                             verify_cert,
+                                             ca_path_);
   }
 
  private:

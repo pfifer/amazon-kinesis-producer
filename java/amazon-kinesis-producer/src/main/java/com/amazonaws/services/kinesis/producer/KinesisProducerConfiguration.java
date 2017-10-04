@@ -252,6 +252,7 @@ public class KinesisProducerConfiguration {
     private long requestTimeout = 6000L;
     private String tempDirectory = "";
     private boolean verifyCertificate = true;
+    private String caPath = "";
 
     /**
      * Enable aggregation. With aggregation, multiple user records are packed into a single
@@ -675,6 +676,18 @@ public class KinesisProducerConfiguration {
      */
     public boolean isVerifyCertificate() {
       return verifyCertificate;
+    }
+
+    /**
+     * Returns the path that the native component will use to verify TLS certificates.  If this is unset the Java
+     * process will extract certificates to the ca directory under {@link #getTempDirectory()}
+     *
+     * See {@link #setCaPath(String)} for more information.
+     *
+     * @return the path where the certificates can be found by the native component
+     */
+    public String getCaPath() {
+        return caPath;
     }
 
     /**
@@ -1186,6 +1199,20 @@ public class KinesisProducerConfiguration {
         return this;
     }
 
+    /**
+     * Sets the location where the native component will look for the certificates for verifying SSL connections.
+     * If this is set the Java component will not extract certificates to the directory.  When this is unset the Java
+     * component will create a 'ca' directory under {@link #getTempDirectory()}, and extract the default set of
+     * certificates to it.
+     *
+     * @param caPath the directory that contains CA certificates in the OpenSSL CA directory format
+     * @return the updated KinesisProducerConfiguration object.
+     */
+    public KinesisProducerConfiguration setCaPath(String caPath) {
+        this.caPath = caPath;
+        return this;
+    }
+
 
     protected Message toProtobufMessage() {
         Configuration c = this.additionalConfigsToProtobuf(
@@ -1212,6 +1239,7 @@ public class KinesisProducerConfiguration {
                 .setRegion(region)
                 .setRequestTimeout(requestTimeout)
                 .setVerifyCertificate(verifyCertificate)
+                .setCaPath(caPath)
                 ).build();
        return Message.newBuilder()
                       .setConfiguration(c)
