@@ -18,6 +18,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <aws/utils/logging.h>
+#include <aws/utils/test/temp_ca_dir.h>
 
 #include <aws/metrics/metrics_manager.h>
 #include <aws/utils/io_service_executor.h>
@@ -33,7 +34,7 @@ using ExtraDimensions = aws::metrics::detail::ExtraDimensions;
 
 auto make_metrics_manager(ExtraDimensions dims = ExtraDimensions()) {
   auto executor = std::make_shared<aws::utils::IoServiceExecutor>(1);
-  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>("");
+  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>(aws::utils::test::get_temp_ca_dir());
   auto creds =
       std::make_shared<aws::auth::BasicAwsCredentialsProvider>(
           "AKIAAAAAAAAAAAAAAAAA",

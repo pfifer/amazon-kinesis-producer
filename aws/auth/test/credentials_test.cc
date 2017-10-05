@@ -23,6 +23,7 @@
 #include <aws/utils/io_service_executor.h>
 #include <aws/http/io_service_socket.h>
 #include <aws/http/ec2_metadata.h>
+#include <aws/utils/test/temp_ca_dir.h>
 
 namespace {
 
@@ -35,7 +36,7 @@ const std::string kDefaultToken = "abcd";
 std::shared_ptr<aws::auth::InstanceProfileAwsCredentialsProvider>
 make_provider() {
   auto executor = std::make_shared<aws::utils::IoServiceExecutor>(1);
-  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>("");
+  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>(aws::utils::test::get_temp_ca_dir());
   auto ec2_metadata =
       std::make_shared<aws::http::Ec2Metadata>(
           executor,

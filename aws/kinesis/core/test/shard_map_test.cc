@@ -18,6 +18,7 @@
 #include <aws/utils/io_service_executor.h>
 #include <aws/http/io_service_socket.h>
 #include <aws/utils/utils.h>
+#include <aws/utils/test/temp_ca_dir.h>
 
 namespace {
 
@@ -27,7 +28,7 @@ const std::string kStreamName = "myStream";
 class Wrapper {
  public:
   Wrapper(int delay = 1500)
-      : socket_factory_(std::make_shared<aws::http::IoServiceSocketFactory>("")),
+      : socket_factory_(std::make_shared<aws::http::IoServiceSocketFactory>(aws::utils::test::get_temp_ca_dir())),
         executor_(std::make_shared<aws::utils::IoServiceExecutor>(1)),
         http_client_(
             std::make_shared<aws::http::HttpClient>(

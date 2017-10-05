@@ -31,6 +31,7 @@
 #include <aws/utils/io_service_executor.h>
 #include <aws/utils/logging.h>
 #include <aws/utils/utils.h>
+#include <aws/utils/test/temp_ca_dir.h>
 
 int main(int argc, char** argv) {
   aws::utils::setup_logging();
@@ -82,7 +83,7 @@ int main(int argc, char** argv) {
   auto ipc = std::make_shared<aws::kinesis::core::IpcManager>(ipc_channel);
 
   auto executor = std::make_shared<aws::utils::IoServiceExecutor>(8);
-  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>("");
+  auto socket_factory = std::make_shared<aws::http::IoServiceSocketFactory>(aws::utils::test::get_temp_ca_dir());
   auto ec2_metadata = std::make_shared<aws::http::Ec2Metadata>(executor,
                                                                socket_factory);
   auto provider =

@@ -21,13 +21,14 @@
 #include <aws/http/io_service_socket.h>
 #include <aws/utils/io_service_executor.h>
 #include <aws/utils/utils.h>
+#include <aws/utils/test/temp_ca_dir.h>
 
 namespace {
 
 const int kPort = aws::kinesis::test::TestTLSServer::kDefaultPort;
 
 auto make_socket_factory() {
-  return std::make_shared<aws::http::IoServiceSocketFactory>("");
+  return std::make_shared<aws::http::IoServiceSocketFactory>(aws::utils::test::get_temp_ca_dir());
 }
 
 auto make_executor() {

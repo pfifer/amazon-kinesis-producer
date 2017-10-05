@@ -21,6 +21,7 @@
 #include <aws/utils/io_service_executor.h>
 #include <aws/http/io_service_socket.h>
 #include <aws/utils/utils.h>
+#include <aws/utils/test/temp_ca_dir.h>
 
 namespace {
 
@@ -92,7 +93,7 @@ auto make_aggregator(
     std::shared_ptr<aws::kinesis::core::Configuration> config =
         std::shared_ptr<aws::kinesis::core::Configuration>()) {
   auto executor = std::make_shared<aws::utils::IoServiceExecutor>(4);
-  auto factory = std::make_shared<aws::http::IoServiceSocketFactory>("");
+  auto factory = std::make_shared<aws::http::IoServiceSocketFactory>(aws::utils::test::get_temp_ca_dir());
 
   auto http_client =
       std::make_shared<aws::http::HttpClient>(
