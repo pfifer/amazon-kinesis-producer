@@ -5,6 +5,9 @@ project : requirements
   <cxxflags>"-isystem ./third_party/include"
   <cxxflags>-std=c++1y
   <cxxflags>-fpermissive
+  [ conditional <host-os>darwin :
+      <cxxflags>-mmacosx-version-min=10.9
+  ]
   <linkflags>-L./third_party/lib
   [ conditional <host-os>windows :
       <linkflags>-lgdi32
@@ -123,7 +126,8 @@ exe tests :
   aws/utils/test/concurrent_linked_queue_test.cc
   aws/utils/test/json_test.cc
   aws/utils/test/spin_lock_test.cc
-  aws/utils/test/token_bucket_test.cc ;
+  aws/utils/test/token_bucket_test.cc
+  aws/utils/test/temp_ca_dir.cc ;
 
 exe kinesis_producer :
   deps
@@ -133,4 +137,5 @@ exe kinesis_producer :
 exe test_driver :
   deps
   core
+  aws/utils/test/temp_ca_dir.cc
   aws/kinesis/test_driver.cc ;
