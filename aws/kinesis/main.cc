@@ -23,6 +23,7 @@
 #include <boost/algorithm/hex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/make_shared.hpp>
+#include <boost/filesystem.hpp>
 
 #include <aws/kinesis/core/kinesis_producer.h>
 #include <aws/utils/io_service_executor.h>
@@ -104,39 +105,25 @@ std::string get_region(const aws::kinesis::core::Configuration& config,
   return *ec2_region;
 }
 
-void report_ca_error(const std::string& message, errno_t specific_error = 0) {
-  errno_t report_errno = specific_error;
-  if (!report_errno) {
-    report_errno = errno;
-  }
-  LOG(error) << message << ".  It is possible that SSL connections will fail."
-             << "[errno=" << report_errno << ", message: " << std::strerror(report_errno) << "]";
+void report_ca_error(const std::string& message) {
+  LOG(error) << message << ".  It is possible that SSL connections will fail.";
 }
   
 std::string get_ca_path(const std::shared_ptr<aws::kinesis::core::Configuration>& config) {
-  std::string ca_path;
-  if (!config->ca_path().empty()) {
-    ca_path = config->ca_path();
-  } else {
-    char cwd_buf[PATH_MAX];
-    char* cwd_result = getcwd(cwd_buf, sizeof(cwd_buf) - 1);
-    if (cwd_result == nullptr) {
-      report_ca_error("Failed to get the current working directory to load the CA path");
-      return "";
-    }
-    std::string cwd = cwd_result;
-    ca_path = cwd + "/ca";
+  boost::filesystem::path ca_path(config->ca_path());
+  if (ca_path.empty()) {
+    ca_path = boost::filesystem::path("ca");
   }
 
-  struct stat stat_buf;
-  if (stat(ca_path.c_str(), &stat_buf)) {
-    report_ca_error("Failed to stat " + ca_path);
-    return ca_path;
+  if (boost::filesystem::exists(ca_path) ) {
+    if (!boost::filesystem::is_directory(ca_path)) {
+      report_ca_error("Path " + boost::filesystem::canonical(ca_path).native() + " isn't a directory.");
+    }
+  } else {
+    report_ca_error("Path " + ca_path.native() + " doesn't exist.");
   }
-  if (!S_ISDIR(stat_buf.st_mode)) {
-    report_ca_error("'" + ca_path + "' isn't a directory.", EINVAL);
-  }
-  return ca_path;
+    
+  return ca_path.native();
 }
 
 std::pair<
