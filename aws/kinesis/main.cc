@@ -112,7 +112,7 @@ void report_ca_error(const std::string& message) {
 std::string get_ca_path(const std::shared_ptr<aws::kinesis::core::Configuration>& config) {
   boost::filesystem::path ca_path(config->ca_path());
   if (ca_path.empty()) {
-    ca_path = boost::filesystem::path("ca");
+    ca_path = boost::filesystem::path("cacerts");
   }
 
   if (boost::filesystem::exists(ca_path) ) {
