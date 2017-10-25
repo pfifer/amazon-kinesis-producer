@@ -72,7 +72,7 @@ if [ ! -d "openssl-1.0.1m" ]; then
 
   if [[ $(uname) == 'Darwin' ]]; then
     ./Configure darwin64-x86_64-cc $OPTS --prefix=$INSTALL_DIR
-  elif [[ $(uname) == MINGW* || if $(uname) == MSYS* ]]; then
+  elif [[ $(uname) == MINGW* || $(uname) == MSYS* ]]; then
     ./Configure mingw64 $OPTS --prefix=$INSTALL_DIR
 #    find ./ -name Makefile | while read f; do echo >> $f; echo "%.o: %.c" >> $f; echo -e '\t$(COMPILE.c) $(OUTPUT_OPTION) $<;' >> $f; done
   else
