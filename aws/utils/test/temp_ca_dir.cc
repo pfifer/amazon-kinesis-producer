@@ -21,7 +21,7 @@ std::string& aws::utils::test::get_temp_ca_dir() {
         aws::lock_guard<aws::mutex> guard(creation_mutex);
         if (!ca_temp_directory) {
             boost::filesystem::path temp_directory = boost::filesystem::unique_path();
-            ca_temp_directory = std::make_shared<std::string>(temp_directory.native());
+            ca_temp_directory = std::make_shared<std::string>(temp_directory.string());
         }
     }
     return *ca_temp_directory;

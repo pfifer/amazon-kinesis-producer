@@ -116,10 +116,10 @@ std::string get_ca_path(const std::shared_ptr<aws::kinesis::core::Configuration>
         LOG(error) << "Path " << boost::filesystem::canonical(ca_path) << " isn't a directory.  It's possible SSL connections will fail";
     }
   } else {
-      LOG(error) << "Path " << ca_path.native() << " doesn't exist. It's possible SSL connections will fail"; 
+      LOG(error) << "Path " << ca_path << " doesn't exist. It's possible SSL connections will fail";
   }
     
-  return ca_path.native();
+  return ca_path.string();
 }
 
 std::pair<
