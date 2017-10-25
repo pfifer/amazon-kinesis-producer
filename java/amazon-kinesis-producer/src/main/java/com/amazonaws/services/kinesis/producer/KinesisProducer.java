@@ -820,6 +820,10 @@ public class KinesisProducer {
                         }
                         extracted.setExecutable(true);
                     }
+                    if (StringUtils.isBlank(config.getCaPath())) {
+                        CertificateExtractor certificateExtractor = new CertificateExtractor();
+                        config.setCaPath(certificateExtractor.extractCertificates(tmpDirFile));
+                    }
      
                     pathToLibDir = pathToTmpDir;
                 } catch (Exception e) {

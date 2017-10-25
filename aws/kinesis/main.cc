@@ -114,7 +114,7 @@ std::string get_ca_path(const std::shared_ptr<aws::kinesis::core::Configuration>
   if (ca_path.empty()) {
     ca_path = boost::filesystem::path("cacerts");
   }
-
+  boost::filesystem::path absolute = boost::filesystem::absolute(ca_path);
   if (boost::filesystem::exists(ca_path) ) {
     if (!boost::filesystem::is_directory(ca_path)) {
       report_ca_error("Path " + boost::filesystem::canonical(ca_path).native() + " isn't a directory.");
@@ -228,7 +228,8 @@ int main(int argc, const char* argv[]) {
     aws::utils::set_log_level(config->log_level());
 
     auto executor = get_executor();
-    auto socket_factory = get_socket_factory(get_ca_path(config));
+    std::string ca_path = get_ca_path(config);
+    auto socket_factory = get_socket_factory(ca_path);
     auto ec2_md =
       std::make_shared<aws::http::Ec2Metadata>(executor, socket_factory);
     auto region = get_region(*config, ec2_md);

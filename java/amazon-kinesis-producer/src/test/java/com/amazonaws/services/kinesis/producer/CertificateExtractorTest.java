@@ -27,12 +27,12 @@ import org.junit.Test;
 
 public class CertificateExtractorTest {
 
-    static final List<String> EXPECTED_CERTIFICATES = Arrays.asList("00673b5b.0", "0d69c7e1.0", "10531352.0",
-            "111e6273.0", "1e8e7201.0", "219d9499.0", "23f4c490.0", "27af790d.0", "2add47b6.0", "343eb6cb.0",
-            "399e7759.0", "3ad48a91.0", "524d9b43.0", "57692373.0", "5e4e69e7.0", "67495436.0", "69105f4f.0",
-            "7999be0d.0", "7a7c655d.0", "7d453d8f.0", "81b9768f.0", "85cde254.0", "87753b0d.0", "8d6437c3.0",
-            "9772ca32.0", "a2c66da8.0", "a7d2cf64.0", "b0f3e76e.0", "bc3f2570.0", "c491639e.0", "c7e2a638.0",
-            "c90bc37d.0", "d41b5e2a.0", "e775ed2d.0", "ed39abd0.0", "facacbc6.0", "fb5fa911.0", "fd08c599.0");
+    static final List<String> EXPECTED_CERTIFICATES = Arrays.asList("062cdee6.0", "09789157.0", "116bf586.0",
+            "1d3472b9.0", "244b5494.0", "2c543cd1.0", "2e4eed3c.0", "3513523f.0", "480720ec.0", "4a6481c9.0",
+            "4bfab552.0", "5ad8a5d6.0", "607986c7.0", "653b494a.0", "6d41d539.0", "75d1b2ed.0", "76cb8f92.0",
+            "7d0b38bd.0", "7f3d5d1d.0", "8867006a.0", "8cb5ee0f.0", "9d04f354.0", "ad088e1d.0", "b0e59380.0",
+            "b1159c4c.0", "b204d74a.0", "ba89ed3b.0", "c01cdfa2.0", "c089bbbd.0", "c0ff1f52.0", "cbeee9e2.0",
+            "cbf06781.0", "ce5e74ef.0", "dd8e9d41.0", "de6d66f3.0", "e2799e36.0", "f081611a.0", "f387163d.0");
 
     @Test
     public void testNoCertificatesExtraction() throws Exception {

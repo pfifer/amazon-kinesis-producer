@@ -44,16 +44,17 @@ class CertificateExtractor {
         this.certificateSourceClass = certificateSourceClass;
     }
 
-    void extractCertificates(File tempDirectory) throws IOException {
+    String extractCertificates(File tempDirectory) throws IOException {
 
         Path lockFile = new File(tempDirectory, LOCK_FILE_NAME).toPath();
         boolean lockHeld = false;
         int attempts = 1;
+        File destinationCaDirectory = prepareDestination(tempDirectory);
         while (!lockHeld) {
             try {
                 try (FileLock lock = FileChannel.open(lockFile, StandardOpenOption.CREATE, StandardOpenOption.WRITE).lock()) {
                     lockHeld = true;
-                    extractCertificatesUnderLock(tempDirectory);
+                    extractCertificatesUnderLock(destinationCaDirectory);
                 }
             } catch (OverlappingFileLockException ofle) {
                 attempts++;
@@ -61,22 +62,22 @@ class CertificateExtractor {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ie) {
-                    log.info("Interrupted while sleeping for log.  Giving up on certificate extraction.");
-                    return;
+                    log.info("Interrupted while sleeping for lock.  Giving up on certificate extraction.");
+                    break;
                 }
             }
         }
+        return destinationCaDirectory.getAbsolutePath();
     }
 
-    private void extractCertificatesUnderLock(File tempDirectory) throws IOException {
+    private void extractCertificatesUnderLock(File destinationCaDirectory) throws IOException {
         CodeSource codeSource = certificateSourceClass.getProtectionDomain().getCodeSource();
         if (codeSource != null) {
             FileSystem fs;
             try {
                 final Path path = Paths.get(codeSource.getLocation().toURI());
                 fs = path.getFileSystem();
-                File destinationCaCerts = prepareDestination(tempDirectory);
-                final Path destinationPath = destinationCaCerts.toPath();
+                final Path destinationPath = destinationCaDirectory.toPath();
 
                 Path caCertsPath = fs.getPath(path.toString(), CA_CERTS_DIRECTORY_NAME);
                 Files.walkFileTree(caCertsPath, new VerifyingVisitor(destinationPath));
@@ -117,12 +118,12 @@ class CertificateExtractor {
             if (attrs.isRegularFile()) {
 
                 Path destination = new File(destinationPath.toFile(), file.getFileName().toString()).toPath();
-                log.info("Extracting certificate '{}' to '{}'", file.getFileName(), destination);
+                log.debug("Extracting certificate '{}' to '{}'", file.getFileName(), destination);
                 byte[] certificateData = Files.readAllBytes(file);
                 if (Files.exists(destination)) {
                     byte[] existingData = Files.readAllBytes(destination);
                     if (certificateData.length == existingData.length && Arrays.equals(certificateData, existingData)) {
-                        log.info("Certificate '{}' already exists, and content matches. Skipping", file.getFileName());
+                        log.debug("Certificate '{}' already exists, and content matches. Skipping", file.getFileName());
                         return FileVisitResult.CONTINUE;
                     }
                     log.info("Certificate '{}' already exists, but the content doesn't match. Overwriting", file.getFileName());

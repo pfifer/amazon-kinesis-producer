@@ -281,7 +281,7 @@ class IoServiceSocketFactory : public SocketFactory {
   std::shared_ptr<boost::asio::io_service> io_service_;
   boost::asio::io_service::work w_;
   aws::thread thread_;
-  const std::string& ca_path_;
+  const std::string ca_path_;
 };
 
 } //namespace http

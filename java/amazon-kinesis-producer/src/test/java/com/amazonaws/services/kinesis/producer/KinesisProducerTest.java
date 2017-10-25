@@ -173,7 +173,7 @@ public class KinesisProducerTest {
             exec.submit(new Runnable() {
                 @Override
                 public void run() {
-                    kps[n] = getProducer(null, null);
+                    kps[n] = getProducer(fakeProvider(), null);
                 }
             });
         }
@@ -185,6 +185,12 @@ public class KinesisProducerTest {
             assertNotNull(kps[i].getMetrics());
             kps[i].destroy();
         }
+    }
+
+    private AWSCredentialsProvider fakeProvider() {
+        final String AKID = "AKIAAAAAAAAAAAAAAAAA";
+        final String SECRET_KEY = StringUtils.repeat("A", 40);
+        return new StaticCredentialsProvider(new BasicAWSCredentials(AKID, SECRET_KEY));
     }
  
     private KinesisProducer getProducer(AWSCredentialsProvider provider, AWSCredentialsProvider metrics_creds_provider) {
