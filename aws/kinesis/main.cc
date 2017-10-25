@@ -105,10 +105,6 @@ std::string get_region(const aws::kinesis::core::Configuration& config,
   return *ec2_region;
 }
 
-void report_ca_error(const std::string& message) {
-  LOG(error) << message << ".  It is possible that SSL connections will fail.";
-}
-  
 std::string get_ca_path(const std::shared_ptr<aws::kinesis::core::Configuration>& config) {
   boost::filesystem::path ca_path(config->ca_path());
   if (ca_path.empty()) {
@@ -117,10 +113,10 @@ std::string get_ca_path(const std::shared_ptr<aws::kinesis::core::Configuration>
   boost::filesystem::path absolute = boost::filesystem::absolute(ca_path);
   if (boost::filesystem::exists(ca_path) ) {
     if (!boost::filesystem::is_directory(ca_path)) {
-      report_ca_error("Path " + boost::filesystem::canonical(ca_path).native() + " isn't a directory.");
+        LOG(error) << "Path " << boost::filesystem::canonical(ca_path) << " isn't a directory.  It's possible SSL connections will fail";
     }
   } else {
-    report_ca_error("Path " + ca_path.native() + " doesn't exist.");
+      LOG(error) << "Path " << ca_path.native() << " doesn't exist. It's possible SSL connections will fail"; 
   }
     
   return ca_path.native();
