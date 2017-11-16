@@ -1,3 +1,3 @@
 
 
-include("nix-common.cmake")
+include("cmake/nix-common.cmake")
