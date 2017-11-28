@@ -1,0 +1,45 @@
+#find_package(Boost COMPONENTS regex thread log system random filesystem chrono program_options unit_test_framework)
+
+if (BOOST_FOUND AND USE_LOCATED_BOOST)
+else ()
+    set(BOOST_SOURCE_DIR ${CMAKE_BINARY_DIR}/src/boost CACHE INTERNAL "Source directory for Boost build")
+    set(BOOST_INSTALL_DIR ${THIRD_PARTY_INSTALL_DIR} CACHE INTERNAL "Install directory for Boost")
+    set(BOOST_LIB_DIR ${OPENSSL_INSTALL_DIR}/lib CACHE INTERNAL "Library directory for Boost")
+
+    set(BOOST_BUILD_LIBS atomic,chrono,log,system,test,random,regex,thread,filesystem)
+    set(BOOST_BUILD_OPTIONS -j 8 --build-type=minimal --layout=system --prefix=${BOOST_INSTALL_DIR} link=static threading=multi release)
+
+
+    externalproject_add(
+            BOOST
+            SOURCE_DIR ${BOOST_SOURCE_DIR}
+            URL https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.gz
+            URL_HASH "SHA256=a13de2c8fbad635e6ba9c8f8714a0e6b4264b60a29b964b940a22554705b6b60"
+            CONFIGURE_COMMAND ${BOOST_SOURCE_DIR}/bootstrap.sh --with-libraries=${BOOST_BUILD_LIBS}
+            BUILD_COMMAND ${BOOST_SOURCE_DIR}/b2 ${BOOST_BUILD_OPTIONS}
+            BUILD_IN_SOURCE 1
+            INSTALL_COMMAND ${BOOST_SOURCE_DIR}/b2 --prefix=${BOOST_INSTALL_DIR} install
+    )
+    message(STATUS "Boost Install Dir: ${OPENSSL_INSTALL_DIR}")
+
+    macro(CREATE_BOOST_LIB lib_name)
+        add_library(boost_${lib_name} UNKNOWN IMPORTED)
+        set_property(TARGET boost_${lib_name} PROPERTY IMPORTED_LOCATION ${BOOST_LIB_DIR}/libboost_${lib_name}.a)
+    endmacro()
+
+    CREATE_BOOST_LIB(atomic)
+    CREATE_BOOST_LIB(chrono)
+    CREATE_BOOST_LIB(filesystem)
+    CREATE_BOOST_LIB(date_time)
+    CREATE_BOOST_LIB(regex)
+    CREATE_BOOST_LIB(thread)
+    CREATE_BOOST_LIB(log)
+    CREATE_BOOST_LIB(log_setup)
+    CREATE_BOOST_LIB(random)
+    CREATE_BOOST_LIB(prg_exec_monitor)
+    CREATE_BOOST_LIB(unit_test_framework)
+
+    add_dependencies(boost_log boost_log_setup)
+    add_dependencies(boost_unit_test_framework prg_exec_monitor)
+
+endif ()
