@@ -2,10 +2,11 @@
 
 if (BOOST_FOUND AND USE_LOCATED_BOOST)
 else ()
+    include(ExternalProject)
     set(BOOST_SOURCE_DIR ${CMAKE_BINARY_DIR}/src/boost CACHE INTERNAL "Source directory for Boost build")
-    set(BOOST_INSTALL_DIR ${THIRD_PARTY_INSTALL_DIR} CACHE INTERNAL "Install directory for Boost")
-    set(BOOST_LIB_DIR ${OPENSSL_INSTALL_DIR}/lib CACHE INTERNAL "Library directory for Boost")
-
+    set(BOOST_INSTALL_DIR ${THIRD_PARTY_INSTALL_DIR}/boost CACHE INTERNAL "Install directory for Boost")
+    set(BOOST_LIB_DIR ${BOOST_INSTALL_DIR}/lib CACHE INTERNAL "Library directory for Boost")
+    set(BOOST_INCLUDE_DIR ${BOOST_INSTALL_DIR}/include CACHE INTERNAL "Library directory for Boost")
     set(BOOST_BUILD_LIBS atomic,chrono,log,system,test,random,regex,thread,filesystem)
     set(BOOST_BUILD_OPTIONS -j 8 --build-type=minimal --layout=system --prefix=${BOOST_INSTALL_DIR} link=static threading=multi release)
 
@@ -22,10 +23,10 @@ else ()
     )
     message(STATUS "Boost Install Dir: ${OPENSSL_INSTALL_DIR}")
 
-    macro(CREATE_BOOST_LIB lib_name)
-        add_library(boost_${lib_name} UNKNOWN IMPORTED)
-        set_property(TARGET boost_${lib_name} PROPERTY IMPORTED_LOCATION ${BOOST_LIB_DIR}/libboost_${lib_name}.a)
-    endmacro()
+    include(cmake/deps/target-create.cmake)
+    function(CREATE_BOOST_LIB BOOST_NAME)
+        create_third_party_library(boost_${BOOST_NAME} libboost_${BOOST_NAME}.a ${BOOST_LIB_DIR} ${BOOST_INCLUDE_DIR})
+    endfunction()
 
     CREATE_BOOST_LIB(atomic)
     CREATE_BOOST_LIB(chrono)

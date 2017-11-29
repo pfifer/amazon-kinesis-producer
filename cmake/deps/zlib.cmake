@@ -5,9 +5,10 @@ if (ZLIB_FOUND AND USE_LOCATED_ZLIB)
 else ()
 
     include(ExternalProject)
+    include(cmake/deps/target-create.cmake)
 
     set(ZLIB_SOURCE_DIR ${CMAKE_BINARY_DIR}/src/zlib CACHE INTERNAL "zlib source dir")
-    set(ZLIB_INSTALL_DIR ${THIRD_PARTY_INSTALL_DIR} CACHE INTERNAL "zlib installation directory")
+    set(ZLIB_INSTALL_DIR ${THIRD_PARTY_INSTALL_DIR}/zlib CACHE INTERNAL "zlib installation directory")
     set(ZLIB_LIB_DIR ${ZLIB_INSTALL_DIR}/lib CACHE INTERNAL "zlib library directory")
     set(ZLIB_INCLUDE_DIR ${ZLIB_INSTALL_DIR}/include CACHE INTERNAL "zlib include directory")
 
@@ -21,6 +22,6 @@ else ()
             -DBUILD_SHARED_LIBS=0
             )
 
-    add_library(zlib UNKNOWN IMPORTED)
-    set_property(TARGET zlib PROPERTY IMPORTED_LOCATION ${ZLIB_LIB_DIR}/libz.a)
+    create_third_party_library(zlib libz.a ${ZLIB_LIB_DIR} ${ZLIB_INCLUDE_DIR})
+
 endif ()

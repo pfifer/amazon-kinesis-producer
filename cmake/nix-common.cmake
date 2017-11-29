@@ -1,5 +1,6 @@
 set(PLATFORM_SPECIFIC_SOURCE aws/utils/openssl_md5_hasher.cc aws/kinesis/platform/nix.cc)
 set(THIRD_PARTY_INSTALL_DIR ${CMAKE_BINARY_DIR}/third-party CACHE INTERNAL "Location for third party installations")
-include(cmake/deps/zlib-build.cmake)
+include(cmake/deps/zlib.cmake)
 include(cmake/deps/openssl.cmake)
 include(cmake/deps/boost.cmake)
+include(cmake/deps/curl.cmake)
