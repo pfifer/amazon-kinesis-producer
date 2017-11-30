@@ -18,6 +18,7 @@
 #include <Windows.h>
 #else
 #include <cerrno>
+#include <cstring>
 #endif
 
 namespace aws {
@@ -42,7 +43,7 @@ namespace aws {
         ss << "Failed to translate error (" << code << ") due to " << GetLastError() << " while attempting to translate the error code";
       }
 #else
-      ss << strerror(code);
+      ss << std::strerror(code);
 #endif
       return ss.str();
     }
