@@ -4,7 +4,12 @@ else ()
 
     set(AWS_CPP_SDK_SOURCE_DIR ${CMAKE_BINARY_DIR}/src/aws-sdk-cpp CACHE INTERNAL "Source directory for aws-cpp-sdk build")
     set(AWS_CPP_SDK_INSTALL_DIR ${THIRD_PARTY_INSTALL_DIR}/aws-sdk-cpp CACHE INTERNAL "Install directory for aws-cpp-sdk")
-    set(AWS_CPP_SDK_LIB_DIR ${AWS_CPP_SDK_INSTALL_DIR}/lib CACHE INTERNAL "Library directory for aws-cpp-sdk")
+    if (UNIX AND NOT APPLE)
+      # Temporary workaround to how the SDK installs it's libraries
+      set(AWS_CPP_SDK_LIB_DIR ${AWS_CPP_SDK_INSTALL_DIR}/lib64 CACHE INTERNAL "Library directory for aws-cpp-sdk")
+    else ()
+      set(AWS_CPP_SDK_LIB_DIR ${AWS_CPP_SDK_INSTALL_DIR}/lib CACHE INTERNAL "Library directory for aws-cpp-sdk")
+    endif ()
     set(AWS_CPP_SDK_INCLUDE_DIR ${AWS_CPP_SDK_INSTALL_DIR}/include CACHE INTERNAL "Include directories for aws-cpp-sdk")
     set(AWS_CPP_SDK_CONFIG_OPTIONS --disable-shared --with-zlib=${ZLIB_INSTALL_DIR})
 
