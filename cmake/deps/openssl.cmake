@@ -37,7 +37,6 @@ else ()
     SOURCE_DIR ${OPENSSL_SOURCE_DIR}
     URL https://www.openssl.org/source/openssl-1.1.0g.tar.gz
     URL_HASH "SHA256=de4d501267da39310905cb6dc8c6121f7a2cad45a7707f76df828fe1b85073af"
-    PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/openssl.patch
     CONFIGURE_COMMAND ${OPENSSL_SOURCE_DIR}/config ${OPENSSL_CONFIG_OPTIONS} --prefix=${OPENSSL_INSTALL_DIR}
     BUILD_COMMAND make
     BUILD_IN_SOURCE 1
