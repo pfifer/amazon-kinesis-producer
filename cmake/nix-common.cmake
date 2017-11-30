@@ -1,6 +1,22 @@
 set(PLATFORM_SPECIFIC_SOURCE aws/utils/openssl_md5_hasher.cc aws/kinesis/platform/nix.cc)
 set(THIRD_PARTY_INSTALL_DIR ${CMAKE_BINARY_DIR}/third-party CACHE INTERNAL "Location for third party installations")
 
+# set(THIRD_PARTY_CFLAGS_VALUE "CFLAGS='-mmacosx-version-min=10.9'")
+# set(THIRD_PARTY_CXXFLAGS_VALUE "CXXFLAGS='-stdlib=libc++'")
+# set(THIRD_PARTY_LDFLAGS_VALUE "LDFLAGS='-nodefaultlibs -lpthread -ldl -lc++ -lc++abi -lm -lc -lgcc_s'")
+
+if (THIRD_PARTY_CFLAGS_VALUE)
+  set(THIRD_PARTY_CFLAGS "CFLAGS='${THIRD_PARTY_CFLAGS_VALUE}'")
+endif ()
+
+if (THIRD_PARTY_CXXFLAGS_VALUE)
+  set(THIRD_PARTY_CXXFLAGS "CXXFLAGS='${THIRD_PARTY_CXXFLAGS_VALUE}'")
+endif ()
+
+if (THIRD_PARTY_LDFLAGS_VALUE)
+  set(THIRD_PARTY_LDFLAGS "LD_FLAGS='${THIRD_PARTY_LDFLAGS_VALUE}'")
+endif ()
+
 find_package(Threads REQUIRED)
 
 include(cmake/deps/zlib.cmake)

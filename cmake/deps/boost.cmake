@@ -8,7 +8,7 @@ else ()
     set(BOOST_LIB_DIR ${BOOST_INSTALL_DIR}/lib CACHE INTERNAL "Library directory for Boost")
     set(BOOST_INCLUDE_DIR ${BOOST_INSTALL_DIR}/include CACHE INTERNAL "Library directory for Boost")
     set(BOOST_BUILD_LIBS atomic,chrono,log,system,test,random,regex,thread,filesystem,program_options)
-    set(BOOST_BUILD_OPTIONS -j 8 --build-type=minimal --layout=system --prefix=${BOOST_INSTALL_DIR} link=static threading=multi release)
+    set(BOOST_BUILD_OPTIONS -j 8 --build-type=minimal --layout=system --prefix=${BOOST_INSTALL_DIR} link=static threading=multi ${THIRD_PARTY_CXXFLAGS} ${THIRD_PARTY_LDFLAGS} release)
 
     set(BOOST_LIB_NAMES atomic chrono filesystem date_time regex thread log log_setup random program_options system)
     set(BOOST_TEST_LIB_NAMES prg_exec_monitor unit_test_framework)

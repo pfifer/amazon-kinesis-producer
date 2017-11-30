@@ -24,7 +24,7 @@ else ()
             SOURCE_DIR ${CURL_SOURCE_DIR}
             URL https://curl.haxx.se/download/curl-7.57.0.tar.gz
             URL_HASH "SHA256=7ce35f207562674e71dbada6891b37e3f043c1e7a82915cb9c2a17ad3a9d659b"
-            CONFIGURE_COMMAND ${CURL_SOURCE_DIR}/configure ${CURL_CONFIG_OPTIONS} ${THIRD_PARTY_CFLAGS} ${THIRD_PARTY_CXXFLAGS}
+            CONFIGURE_COMMAND ${CURL_SOURCE_DIR}/configure ${CURL_CONFIG_OPTIONS} ${THIRD_PARTY_CFLAGS} ${THIRD_PARTY_CXXFLAGS} ${THIRD_PARTY_LDFLAGS}
             BUILD_COMMAND make -j4
             BUILD_IN_SOURCE 1
             INSTALL_COMMAND make install

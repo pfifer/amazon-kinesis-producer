@@ -22,6 +22,7 @@ else ()
             CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX=${ZLIB_INSTALL_DIR}
             -DBUILD_SHARED_LIBS=0
+            -DCMAKE_CFLAGS=${THIRD_PARTY_CFLAGS_VALUE}
             BUILD_BYPRODUCTS ${ZLIB_ARTIFACT}
             )
 
