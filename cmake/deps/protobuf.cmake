@@ -9,6 +9,14 @@ else ()
     set(PROTOBUF_CONFIG_OPTIONS --disable-shared --with-zlib=${ZLIB_INSTALL_DIR})
     set(PROTO_GENERATED_DIR ${CMAKE_BINARY_DIR}/proto)
 
+    include(cmake/deps/target-create.cmake)
+
+    create_third_party_library(protobuf libprotobuf.a ${PROTOBUF_LIB_DIR} ${PROTOBUF_INCLUDE_DIR} PROTOBUF THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
+    get_target_property(PROTO_ARTIFACT protobuf IMPORTED_LOCATION)
+
+    create_third_party_library(kpl-protobuf libkpl-protobuf.a ${PROTO_GENERATED_DIR}/lib ${PROTO_GENERATED_DIR}/include PROTOBUF_GEN THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
+    get_target_property(KPL_PROTO_ARTIFACT kpl-protobuf IMPORTED_LOCATION)
+
     externalproject_add(
             PROTOBUF
             SOURCE_DIR ${PROTOBUF_SOURCE_DIR}
@@ -19,6 +27,7 @@ else ()
             BUILD_IN_SOURCE 1
             INSTALL_COMMAND make install
             DEPENDS ZLIB
+            BUILD_BYPRODUCTS ${PROTO_ARTIFACT}
     )
 
     externalproject_add(
@@ -29,6 +38,7 @@ else ()
             -DPROTO_DEF_DIR=${CMAKE_SOURCE_DIR}/aws/kinesis/protobuf
             -DCMAKE_INSTALL_PREFIX=${PROTO_GENERATED_DIR}
             DEPENDS PROTOBUF
+            BUILD_BYPRODUCTS ${KPL_PROTO_ARTIFACT}
     )
 
 #    set(PROTO_FILES_DIR ${CMAKE_SOURCE_DIR}/aws/kinesis/protobuf)
@@ -54,8 +64,5 @@ else ()
     #add_library(KPL_PROTOBUF OBJECT ${GENERATED_PROTO_SRC})
     #target_include_directories(KPL_PROTOBUF ${GENERATED_PROTO_HEADERS})
 
-    include(cmake/deps/target-create.cmake)
 
-    create_third_party_library(protobuf libprotobuf.a ${PROTOBUF_LIB_DIR} ${PROTOBUF_INCLUDE_DIR} PROTOBUF THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
-    create_third_party_library(kpl-protobuf libkpl-protobuf.a ${PROTO_GENERATED_DIR}/lib ${PROTO_GENERATED_DIR}/include PROTOBUF_GEN THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
 endif ()

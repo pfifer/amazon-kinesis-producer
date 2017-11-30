@@ -14,8 +14,11 @@ else ()
     list(APPEND CURL_CONFIG_OPTIONS --prefix=${CURL_INSTALL_DIR})
     set(CURL_CONFIG_COMMAND ${CURL_SOURCE_DIR}/configure ${CURL_CONFIG_OPTIONS})
 
+    include(cmake/deps/target-create.cmake)
+    create_third_party_library(curl libcurl.a ${CURL_LIB_DIR} ${CURL_INCLUDE_DIR} CURL THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
 
-    message(STATUS ${CURL_CONFIG_COMMAND})
+    get_target_property(CURL_ARTIFACT curl IMPORTED_LOCATION)
+
     externalproject_add(
             CURL
             SOURCE_DIR ${CURL_SOURCE_DIR}
@@ -26,6 +29,7 @@ else ()
             BUILD_IN_SOURCE 1
             INSTALL_COMMAND make install
             DEPENDS OPENSSL ZLIB
+            BUILD_BYPRODUCTS ${CURL_ARTIFACT}
     )
 
     if (APPLE)
@@ -40,7 +44,5 @@ else ()
     endif ()
     message(STATUS "Curl Install Dir: ${CURL_INSTALL_DIR}")
 
-    include(cmake/deps/target-create.cmake)
 
-    create_third_party_library(curl libcurl.a ${CURL_LIB_DIR} ${CURL_INCLUDE_DIR} CURL THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
 endif ()

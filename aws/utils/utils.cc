@@ -30,12 +30,7 @@
 #include <aws/core/utils/logging/AWSLogging.h>
 #include <aws/core/utils/logging/LogLevel.h>
 #include <aws/utils/logging.h>
-
-#ifdef WIN32
 #include "md5_hasher.h"
-#else
-#include <openssl/md5.h>
-#endif
 
 namespace aws {
 namespace utils {

@@ -146,7 +146,7 @@ public:
     LogToBoost(logLevel, tag, messageStream.str());
   }
 
-  void LogToBoost(LogLevel logLevel, const char* tag, std::string& message) {
+  void LogToBoost(LogLevel logLevel, const char* tag, const std::string& message) {
     BoostLog level = BoostLog::error;
     int logLevelInt = static_cast<int>(logLevel);
     if (logLevelInt < 0) {

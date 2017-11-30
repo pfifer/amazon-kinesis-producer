@@ -22,6 +22,15 @@ else ()
 #    endif ()
 #
 #    message(STATUS "Script file: ${OPENSSL_SCRIPT}")
+    include(cmake/deps/target-create.cmake)
+
+    create_third_party_library(ssl libssl.a ${OPENSSL_LIB_DIR} ${OPENSSL_INCLUDE_DIR} OPENSSL THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
+    create_third_party_library(crypto libcrypto.a ${OPENSSL_LIB_DIR} ${OPENSSL_INCLUDE_DIR} OPENSSL THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
+
+    foreach (OSSL_TARGET ssl crypto)
+        get_target_property(OSSL_ARTIFACT ${OSSL_TARGET} IMPORTED_LOCATION)
+        list(APPEND OSSL_ARTIFACTS ${OSSL_ARTIFACT})
+    endforeach ()
 
     externalproject_add(
             OPENSSL
@@ -34,12 +43,10 @@ else ()
             BUILD_IN_SOURCE 1
             INSTALL_COMMAND make install
             LOG_INSTALL 0
+            BUILD_BYPRODUCTS ${OSSL_ARTIFACTS}
     )
     message(STATUS "OpenSSL Install Dir: ${OPENSSL_INSTALL_DIR}")
 
-    include(cmake/deps/target-create.cmake)
 
-    create_third_party_library(ssl libssl.a ${OPENSSL_LIB_DIR} ${OPENSSL_INCLUDE_DIR} OPENSSL THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
-    create_third_party_library(crypto libcrypto.a ${OPENSSL_LIB_DIR} ${OPENSSL_INCLUDE_DIR} OPENSSL THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
 
 endif ()

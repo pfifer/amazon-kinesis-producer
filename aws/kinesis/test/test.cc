@@ -14,9 +14,7 @@
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp>
 
-#ifdef WIN32
 #include "aws/utils/md5_hasher.h"
-#endif
 
 #include <aws/core/Aws.h>
 
