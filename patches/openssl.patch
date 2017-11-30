@@ -1,0 +1,25 @@
+--- a/Configurations/10-main.conf	2017-11-02 07:29:01.000000000 -0700
++++ b/Configurations/10-main.conf	2017-11-29 10:10:15.000000000 -0800
+@@ -1602,21 +1602,21 @@
+     "darwin-i386-cc" => {
+         inherit_from     => [ "darwin-common", asm("x86_asm") ],
+         cflags           => add(picker(default => "-arch i386 -DL_ENDIAN",
+                                        release => "-fomit-frame-pointer")),
+         bn_ops           => "BN_LLONG RC4_INT",
+         perlasm_scheme   => "macosx",
+         shared_ldflag    => "-arch i386 -dynamiclib",
+     },
+     "darwin64-x86_64-cc" => {
+         inherit_from     => [ "darwin-common", asm("x86_64_asm") ],
+-        cflags           => add("-arch x86_64 -DL_ENDIAN -Wall"),
++        cflags           => add("-arch x86_64 -DL_ENDIAN -Wall -mmacosx-version-min=10.9"),
+         bn_ops           => "SIXTY_FOUR_BIT_LONG",
+         perlasm_scheme   => "macosx",
+         shared_ldflag    => "-arch x86_64 -dynamiclib",
+     },
+ 
+ #### iPhoneOS/iOS
+ #
+ # It takes three prior-set environment variables to make it work:
+ #
+ # CROSS_COMPILE=/where/toolchain/is/usr/bin/ [note ending slash]
