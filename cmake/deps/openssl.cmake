@@ -39,7 +39,7 @@ else ()
 
     include(cmake/deps/target-create.cmake)
 
-    create_third_party_library(ssl libssl.a ${OPENSSL_LIB_DIR} ${OPENSSL_INCLUDE_DIR})
-    create_third_party_library(crypto libcrypto.a ${OPENSSL_LIB_DIR} ${OPENSSL_INCLUDE_DIR})
+    create_third_party_library(ssl libssl.a ${OPENSSL_LIB_DIR} ${OPENSSL_INCLUDE_DIR} OPENSSL THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
+    create_third_party_library(crypto libcrypto.a ${OPENSSL_LIB_DIR} ${OPENSSL_INCLUDE_DIR} OPENSSL THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
 
 endif ()

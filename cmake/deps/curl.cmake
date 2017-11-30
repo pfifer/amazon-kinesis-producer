@@ -27,6 +27,7 @@ else ()
             INSTALL_COMMAND make install
             DEPENDS OPENSSL ZLIB
     )
+
     if (APPLE)
         set(CURL_MAC_SED_PATTERN "s/\#define HAVE_CLOCK_GETTIME_MONOTONIC 1//")
         externalproject_add_step(
@@ -41,5 +42,5 @@ else ()
 
     include(cmake/deps/target-create.cmake)
 
-    create_third_party_library(curl libcurl.a ${CURL_LIB_DIR} ${CURL_INCLUDE_DIR})
+    create_third_party_library(curl libcurl.a ${CURL_LIB_DIR} ${CURL_INCLUDE_DIR} CURL THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
 endif ()

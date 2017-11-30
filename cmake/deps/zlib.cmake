@@ -22,6 +22,6 @@ else ()
             -DBUILD_SHARED_LIBS=0
             )
 
-    create_third_party_library(zlib libz.a ${ZLIB_LIB_DIR} ${ZLIB_INCLUDE_DIR})
+    create_third_party_library(zlib libz.a ${ZLIB_LIB_DIR} ${ZLIB_INCLUDE_DIR} ZLIB THIRD_PARTY_INCLUDES THIRD_PARTY_LIBS THIRD_PARTY_TARGETS)
 
 endif ()

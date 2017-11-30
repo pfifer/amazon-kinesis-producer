@@ -64,10 +64,18 @@ find_package(Threads)
 
 add_executable(kinesis_producer ${SOURCE_FILES} ${HEADER_FILES} aws/kinesis/main.cc ${PROTO_SRCS})
 target_link_libraries(kinesis_producer ${THIRD_PARTY_LIBS})
+target_include_directories(kinesis_producer SYSTEM PRIVATE ${THIRD_PARTY_INCLUDES})
+add_dependencies(kinesis_producer ${THIRD_PARTY_TARGETS})
 
 add_executable(test_driver ${SOURCE_FILES} ${HEADER_FILES} aws/kinesis/test_driver.cc ${PROTO_SRCS})
 target_link_libraries(test_driver ${THIRD_PARTY_LIBS})
+target_include_directories(test_driver SYSTEM PRIVATE ${THIRD_PARTY_INCLUDES})
+add_dependencies(test_driver ${THIRD_PARTY_TARGETS})
+
+#BOOST TEST_THIRD_PARTY_INCLUDES TEST_THIRD_PARTY_LIBS TEST_THIRD_PARTY_TARGETS
 
 add_executable(tests ${SOURCE_FILES} ${HEADER_FILES} ${TESTS_SOURCE} aws/kinesis/test/test.cc ${PROTO_SRCS})
-target_link_libraries(tests ${THIRD_PARTY_LIBS} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+target_include_directories(test_driver SYSTEM PRIVATE ${THIRD_PARTY_INCLUDES} ${TEST_THIRD_PARTY_INCLUDES})
+target_link_libraries(tests ${THIRD_PARTY_LIBS} ${TEST_THIRD_PARTY_LIBS})
+add_dependencies(tests ${THIRD_PARTY_TARGETS} ${TEST_THIRD_PARTY_TARGETS})
 
