@@ -53,7 +53,7 @@ else ()
       MAC_OS_MIN_VERSION
       DEPENDEES download
       WORKING_DIRECTORY <SOURCE_DIR>
-      COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/openssl.patch)
+      COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/patches/openssl.patch)
     endif ()
 
 
