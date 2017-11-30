@@ -22,7 +22,7 @@ else ()
             SOURCE_DIR ${PROTOBUF_SOURCE_DIR}
             URL https://github.com/google/protobuf/releases/download/v3.5.0/protobuf-all-3.5.0.tar.gz
             URL_HASH "SHA256=5c3e0b369e767993969fdebcb3f44cbddd7fdd86644a926780daab46341d10a7"
-            CONFIGURE_COMMAND ${PROTOBUF_SOURCE_DIR}/configure --enable-shared=no CFLAGS=-mmacosx-version-min=10.9 --prefix=${PROTOBUF_INSTALL_DIR} ${THIRD_PARTY_CFLAGS} ${THIRD_PARTY_CXXFLAGS}
+            CONFIGURE_COMMAND ${PROTOBUF_SOURCE_DIR}/configure --enable-shared=no --prefix=${PROTOBUF_INSTALL_DIR} ${THIRD_PARTY_CFLAGS} ${THIRD_PARTY_CXXFLAGS}
             BUILD_COMMAND make -j4
             BUILD_IN_SOURCE 1
             INSTALL_COMMAND make install
