@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(Concurrent) {
   };
 
   for (size_t num_threads = 2;
-       num_threads < std::max(aws::thread::hardware_concurrency(), 8u);
+       num_threads < 64;
        num_threads *= 2) {
     auto duration = f(num_threads);
     auto nanos =
