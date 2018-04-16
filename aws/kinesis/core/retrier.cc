@@ -25,15 +25,15 @@ MetricsPutter& MetricsPutter::operator ()(
       double val,
       boost::optional<uint64_t> shard_id,
       boost::optional<std::string> err_code) {
-  auto f = metrics_manager_->finder().set_name(name);
-  if (err_code) {
-    f.set_error_code(*err_code);
-  }
-  f.set_stream(stream_);
-  if (shard_id) {
-    f.set_shard(ShardMap::shard_id_to_str(*shard_id));
-  }
-  f.find()->put(val);
+  // auto f = metrics_manager_->finder().set_name(name);
+  // if (err_code) {
+  //   f.set_error_code(*err_code);
+  // }
+  // f.set_stream(stream_);
+  // if (shard_id) {
+  //   f.set_shard(ShardMap::shard_id_to_str(*shard_id));
+  // }
+  // f.find()->put(val);
   return *this;
 }
 
